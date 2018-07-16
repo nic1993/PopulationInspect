@@ -1,0 +1,4 @@
+/**
+ * 
+ */
+var storage = window.localStorage;

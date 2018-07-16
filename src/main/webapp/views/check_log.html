@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>巡检日志查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/people_info.css">
+    <link rel="stylesheet" href="css/calendar.css">
+<style>
+a {
+    text-decoration: none;
+}
+ul, ol, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+#startTime,#endTime {
+    height: 28px;
+    width: 150px;
+    padding: 0 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+</style>
+</head>
+<body>
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="login.html" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="main">
+    <div class="check-log-box">
+        <table id="table" class="table table-hover">
+            <caption class="caption" style="font-size: 20px;">
+                <span class="caption-t">巡检日志</span>
+            
+                <div class="date-input-box">
+                    输入查询时间段：
+                    <input id="startTime" class="date-input" required="required" type="text">
+                    <div id="startT"></div>
+                    <span id="td">&nbsp;&nbsp;--&nbsp;&nbsp;</span>
+                    <input id="endTime" class="date-input" required="required" type="text">
+                    <div id="endT"></div>
+                    <input id="check-btn" class="check-btn btn btn-info btn-xs" value="查询" type="button">
+                </div>
+
+            </caption>
+
+            <thead id="check-log-h"></thead>
+            <tbody id="check-log"></tbody>
+            
+        </table>
+          <nav>
+        <ul id = "page" class="pager">
+          <li><a  id="previous" href="javascript:void(0)" ><span aria-hidden="true">&larr;&nbsp;</span>上一页</a></li>
+          <li><a href="javascript:void(0)" id="next">下一页<span aria-hidden="true">&nbsp;&rarr;</span></a></li>
+      </ul>
+    </nav>  
+
+        <div class="modal fade" id="check-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+           <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                           data-dismiss="modal" aria-hidden="true">
+                              &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                           巡检记录
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="check-i"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                     </div>
+                </div><!-- /.modal-content -->
+           </div><!-- /.modal -->
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/police.js"></script>
+<script type="text/javascript">
+var page = 1;
+var isTheLastPage = 0;
+
+$(document).ready(function () {
+    var datas = JSON.parse(storage.getItem('police-info'));
+    var poli_id_my = datas.police.poliId;
+    var startTime_def = '2016-5-1';
+    var myDate = new Date();
+    var endTime_def = myDate.getFullYear()+'-'+(myDate.getMonth()+1)+'-'+(myDate.getDate());
+    
+    admin();
+   
+    getCheckLog(poli_id_my,startTime_def,endTime_def,1);
+    console.log(poli_id_my,startTime_def,endTime_def);
+    
+    $("#previous").click(function(){
+        var startTime = $('#startTime').val();
+        var endTime = $('#endTime').val();
+        //console.log(startTime,endTime);
+
+        if(startTime&&endTime){
+            if (page > 1) {
+                page = page - 1;
+                getCheckLog(poli_id_my,startTime,endTime,page);
+            }else{
+                alert('当前已是第一页');
+            }
+        }else{
+            if (page > 1) {
+                page = page - 1;
+                getCheckLog(poli_id_my,startTime_def,endTime_def,page);
+            }else{
+                alert('当前已是第一页');
+            }
+        }
+       	
+        
+    });
+
+    $("#next").click(function(){
+        var startTime = $('#startTime').val();
+        var endTime = $('#endTime').val();
+        //console.log(startTime,endTime);
+
+        if(startTime&&endTime){
+            if (!isTheLastPage) {
+                page++;
+                getCheckLog(poli_id_my,startTime,endTime,page);
+            }else{
+                alert('当前已是最后一页');
+            }
+        }else{
+            if (!isTheLastPage) {
+                page++;
+                getCheckLog(poli_id_my,startTime_def,endTime_def,page);
+            }else{
+                alert('当前已是最后一页');
+            }
+        }
+       	
+         
+    });
+
+    $('#check-btn').click(function() {
+        var startTime = $('#startTime').val();
+        var endTime = $('#endTime').val();
+        if(startTime&&endTime){
+            getCheckLog(poli_id_my,startTime,endTime,1);
+            //console.log(startTime,endTime);
+        }else{
+            alert('请输入完整的日期！');
+        }
+        
+    });
+        
+});
+
+
+function getCheckLog(poli_id_my,startTime_my,endTime_my,page_my){
+    $.ajax({
+            url: '../police/inspectlog/filter/time',
+            type: 'POST',
+            data: {
+                poli_id: poli_id_my,
+                startTime: startTime_my,
+                endTime: endTime_my,
+                page: page_my,
+                size: 12,
+            },
+            success:function(data){
+                //console.log(page_my,data);
+                var datas = eval('('+data+')');
+                //console.log()
+                var check_log_h = $('#check-log-h');
+
+                var head = '<tr><th>时间</th><th>警员</th><th>小区</th><th>楼宇（建筑）</th><th>单元数</th><th>层</th><th>房间</th><th>巡检记录</th></tr>'
+
+                check_log_h.html(head);
+
+                var peoplebox = $('#check-log');
+                peoplebox.html('');
+                var p = '';
+
+                for (var i = 0; i < datas.inspect.length; i++) {
+                    p += ' <tr><td>'+datas.inspect[i].inspTime+'</td><td>'+datas.inspect[i].poliName+'</td><td>'+datas.inspect[i].commName+'</td><td>'+datas.inspect[i].builName+'</td><td>'+datas.inspect[i].roomUnit+'单元</td><td>'+datas.inspect[i].roomFloor+'层</td><td>'+datas.inspect[i].roomNo+'</td><td><a href="javascript:void(0)" data-toggle="modal" data-target="#check-info" onclick="showCheckInfo('+'\''+datas.inspect[i].inspRec+'\''+')">巡检记录</a></td></tr>';
+                }
+
+                peoplebox.prepend(p);
+
+                if (datas.inspect.length < 12){
+                    isTheLastPage = 1;
+                }else{
+                    isTheLastPage = 0;
+                }
+
+                
+            },
+            error:function(err){
+            alert('发生了错误：'+err.status);
+            console.table(err);
+        }
+    });
+}
+
+
+function showCheckInfo(datas){
+        if(datas&&datas!='undefined'){
+            $('#check-i').html(datas);
+        }else{
+            $('#check-i').html('记录为空！');
+        }
+        
+}
+$('#startT').calendar({
+        trigger: '#startTime',
+        zIndex: 999,
+        format: 'yyyy-mm-dd'
+});
+
+$('#endT').calendar({
+        trigger: '#endTime',
+        zIndex: 999,
+        format: 'yyyy-mm-dd'
+});
+</script>
+</html>

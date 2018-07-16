@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>人员详情</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/people_info.css">
+</head>
+<body>
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a><!--home-->
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+<div class="main">
+    <div id="person-info" class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+        <div class="people-info-details">
+            <div class="picture col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <img src="images/user-def.jpg" alt="住户照片" id="picture" style="width: 100%;max-height: 350px">
+                <p style="width: 100%;height: 10px"></p>
+                <a href="javascript:void(0)" class="btn-info btn-xs " data-toggle="modal" data-target="#edit-people-info">编辑人员信息</a>
+                <a  href="javascript:void(0)" onclick="del_confirm()"  class="btn-xs btn-warning" style="margin-left:20px">删除</a>
+            </div>
+            <div class="people-info-body col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                <span id="roomNo" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">房间号：</span>
+                <span id="username" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">姓名：</span>
+                <span id="sex" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">性别：</span>
+                <span id="tel" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">电话：</span>
+                <span id="idCard" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">身份证号码：</span>
+                <span id="logTime" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">登记时间：</span>
+                <span id="logReason" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">登记原因:</span><br>
+                <span id="place" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">户籍所在地：</span>
+                <span id="livePlace" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">居住地：</span>
+                <span id="workPlace" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">工作地：</span><br>
+                <span id="isFocus" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">是否为重点关注对象：</span><br>
+                <span id="copy" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">备注:</span>
+            </div>
+            <!-- 编辑人员信息 -->
+            <div class="modal fade" id="edit-people-info" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog2">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2" >
+                                <img src="images/compu.png" style="width: 50px;height: 50px;">编辑人员信息
+                                <span id="message"></span>
+                                
+                            </h4>
+                        </div>
+                        <div class="modal-body modal-body2">
+                            <form id="form-edit" enctype='multipart/form-data' action="../person/edit.do" target="test" method="post">
+                                <input id="hidden" type="hidden" value="" name="roomId">
+                                <input id="hidden2" type="hidden" value="" name="persId">
+
+                                <div class="form-group">
+                                    <label for="name">姓名:</label>
+                                    <input type="text" class="form-control" name="persName" id="name-def">
+                                    <input id="callback" style="display:none" class="form-control" name="callback" value="parent.editPerson"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>性别:</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="persSex" id="inlineRadio1" value="1"> 男
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="persSex" id="inlineRadio2" value="0"> 女
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tel">电话:</label>
+                                    <input type="number" class="form-control" name="persPhone" id="tel-def">
+                                </div>
+                                <div class="form-group">
+                                    <label for="id-num">身份证号码:</label>
+                                    <input type="text" class="form-control" name="persIdcard" id="id-num">
+                                </div>
+                                <div class="form-group">
+                                    <label for="log-t">登记时间:</label>
+                                    <input type="datetime" class="form-control" name="timeRegister" id="log-t">
+                                </div>
+                                <div class="form-group">
+                                    <label for="log-t">人员照片:</label>
+                                    <input type="file" accept="image/*" class="form-control" name="persPhoto" id="photo">
+                                </div>
+                                <div class="form-group" style="width: 60%">
+                                    <label  style="width:80px;">登记原因:</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="whyRegister" id="inlineRadio3" value="01"> 自住
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="whyRegister" id="inlineRadio4" value="02"> 租住
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="whyRegister" id="inlineRadio5" value="03"> 工作
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="huji">户籍所在地:</label>
+                                    <input type="text" class="form-control" name="addrCensus" id="huji">
+                                </div>
+                                <div class="form-group">
+                                    <label for="juzhu">居住地:</label>
+                                    <input type="text" class="form-control" name="addrLive" id="juzhu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="work">工作地:</label>
+                                    <input type="text" class="form-control" name="addrWork" id="work">
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <label  style="width:150px;">是否为重点关注对象:</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isFocus" id="inlineRadio6" value="1"> 是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="isFocus" id="inlineRadio7" value="0"> 否
+                                    </label>
+                                </div>
+                                <br>
+                                <span style="margin-left: 10px;">备注:</span><br>
+                                <textarea id="copy-def" type="text" name="ramark" style="width: 97%;height: 100px;margin-left: 10px;"></textarea>
+                                
+                                <button id="btn-add" style="width: 70px;float: right;margin: 10px;" type="submit" class="btn btn-primary btn-xs">
+                                    提交
+                                </button>
+                                <button style="width: 70px;float: right;margin: 10px;" type="button" class="btn btn-default btn-xs"
+                                    data-dismiss="modal">取消
+                                </button>
+                                <iframe name="test" style="display: none;"></iframe>
+                             </form>
+                        </div>
+                        <div class="modal-footer" style="border: none;"></div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+                
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/peopleInformation.js"></script>
+<script src="js/main.js"></script>
+<script src="js/police.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+    var datas = JSON.parse(storage.getItem('police-info'));
+    admin();
+
+    persId = window.location.href.split("?")[1].split("&")[0].split("=")[1];
+    room = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+    personInformation(persId,room);
+
+}
+
+function editPerson(resultCode) {
+    if (1 == resultCode) {
+        var message = $("#message");
+        message.html("");
+        message.text("修改人员信息成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#edit-people-info').modal('hide');
+            personInformation(persId,room);
+        },2000);
+    }
+}
+
+// 是否删除对话框
+function del_confirm(){
+    var roomId = $("#hidden").val();
+    var r=confirm("您确认要删除该人员信息吗？");
+    if (r==true){
+        deletePeople(persId,roomId);
+    }else{}
+}
+//删除人员
+function deletePeople(persId,roomId){
+    console.log(persId,roomId);
+    $.ajax({
+        url: '../person/edit.do',
+        type: 'post',
+        dataType:'json',
+        data: {
+            persId: persId,
+            roomId: roomId,
+            isDeleted: true,
+        },
+        success:function(data){
+            console.log(data);
+            if(data.resultCode == 1){
+                alert("操作成功！")
+            }
+        },
+        error:function(err){
+            alert('发生了错误：'+err.status);
+            console.table(err);
+        }
+    });
+}
+</script>
+</html>

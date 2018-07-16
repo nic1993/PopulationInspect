@@ -1,0 +1,90 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+body,html{
+	width:100%;
+	height:100%;
+	min-height: 700px;
+}
+.wrapper {
+    width:100%;
+	height:100%;
+	padding-top:1px; 
+    background:rgb(3,96,163);
+}
+.main{
+	width: 823px;
+	height: 479px;
+	margin:60px auto;
+	padding-top: 1px;
+	background-image: url(../images/loginbar.jpg);
+	background-size: cover;
+}
+.loginBox {
+    background-color: #FEFEFE;
+    border: 1px solid #BfD6E1;
+    border-radius: 5px;
+    color: #444;
+    font: 14px 'Microsoft YaHei','微软雅黑';
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 350px
+}
+.loginBox .loginBoxCenter {
+    border-bottom: 1px solid #DDE0E8;
+    padding: 15px;
+}
+.loginBox .loginBoxCenter p {
+    margin-bottom: 10px
+}
+.loginBox .loginBoxButtons {
+    background-color: #F0F4F6;
+    border-top: 1px solid #FFF;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    line-height: 28px;
+    overflow: hidden;
+    padding: 10px 24px;
+    vertical-align: center;
+}
+.loginBox .loginInput {
+    border: 1px solid #D2D9dC;
+    border-radius: 2px;
+    color: #444;
+    font: 12px 'Microsoft YaHei','微软雅黑';
+    padding: 8px 14px;
+    margin-bottom: 8px;
+    width: 280px;
+}
+.loginBox .loginInput:fcous {
+    border: 1px solid #B7D4EA;
+    box-shadow: 0 0 8px #B7D4EA;
+}
+.loginBox .loginBtn {
+    background-image: linear-gradient(to bottom, #B5DEF2, #85CFEE);
+    border: 1px solid #98CCE7;
+    border-radius: 20px;
+    box-shadow:inset rgba(255,255,255,0.6) 0 1px 1px, rgba(0,0,0,0.1) 0 1px 1px;
+    color: #FFF;
+    cursor: pointer;
+    float: right;
+    font: bold 13px Arial;
+    padding: 5px 14px;
+    margin-left:10px;
+}
+.error{
+	display:inline-block;
+	font-size:10px;
+	color:red;
+	width:150px;
+	height:15px;
+}
+.logo{
+	font-size: 26px;
+	font-weight: bold;
+	color: white;
+	position: relative;
+	top: 50px;
+	left: 260px;
+}

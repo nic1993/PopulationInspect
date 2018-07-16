@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>人员信息查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/searchPerson.css">
+     <link rel="stylesheet" href="css/calendar.css">
+<style>
+a {
+    text-decoration: none;
+}
+ul, ol, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+</style>
+</head>
+<body>
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="login.html" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="main">
+    <div class="community">
+       <select id="communityName" class="select">
+       </select>
+       <select id="buildingName" style="width:7%" class="select">
+         <option  class="selected"  value="building" selected >请选择楼宇...</option>
+       </select>
+       <select id="loneBuilding" class="select">
+       </select>
+       <input id="unit" class="form-control select" type="text" placeholder="请输入单元...如1单元">
+       <input id="floor" class="form-control select" type="text" placeholder="请输入楼层...如1楼">
+       <input id="room" class="form-control select" type="text" placeholder="请输入房间号...">
+       <select id="roomSelect" class="select">
+          <option value="roomSelect" selected>请选择房间分类...</option>
+          <option value="01">住宅</option>
+          <option value="02">特业</option>
+          <option value="03">学校</option>
+          <option value="04">商铺</option>
+          <option value="05">其他</option>
+          <option value="06">重点关注</option>
+       </select>
+       <select id="roomSelectSub" class="select">
+          <option value="roomSelectSub" selected>请选择房间子类...</option>
+          <option value="0101">自住住宅</option>
+          <option value="0102">出租住宅</option>
+          <option value="0201">旅馆</option>
+          <option value="0202">废旧金属回收</option>
+          <option value="0203">刻字刻章</option>
+          <option value="0204">典当</option>
+          <option value="0205">网吧</option>
+          <option value="0301">幼儿园</option>
+          <option value="0302">中小学</option>
+          <option value="0303">学生宿舍</option>
+          <option value="0401">足浴</option>
+          <option value="0402">棋牌</option>
+          <option value="0403">KTV</option>
+          <option value="0405">餐饮</option>
+          <option value="0406">药店（医院）</option>
+          <option value="0407">水果店</option>
+          <option value="0408">超市</option>
+          <option value="0409">通讯器材</option>
+          <option value="0410">理发店</option>
+          <option value="0411">福利彩票</option>
+          <option value="0412">寄递</option>
+         <option value="0413">摄影</option>
+          <option value="0414">洗衣店</option>
+          <option value="0415">修车店</option>
+          <option value="0416">图文店</option>
+          <option value="0417">浴场</option>
+          <option value="0418">加油站</option>
+          <option value="0419">五金店</option>
+          <option value="0501">农贸市场</option>
+          <option value="0502">基督教堂</option>
+          <option value="0503">其他</option>
+       </select>
+       <select id="overDue" class="select">
+          <option value="overDue" selected>是否超期未巡检...</option>
+          <option value="1">是</option>
+          <option value="0">否</option>
+       </select>
+    </div>
+    <div class="person">
+      <div class="inner">
+       <input id="name" type="text" class="form-control select" placeholder="请输入姓名...">
+       <select id="sex" style="width:7%" class="select">
+         <option value="sex" selected disabled>请选择性别...</option>
+         <option value="1">男</option>
+         <option value="0">女</option>
+       </select>
+       <input id="card" type="text" style="width:11.5%" class="form-control select" placeholder="请输入身份证号...">
+       <input id="phone" type="text" style="width:8%" class="form-control select" placeholder="请输入电话号码...">
+      <input id="regitsterStart" style="width:9%" class="form-control select" type="text" placeholder="选择开始登记时间">
+      <div id="startTime"></div>
+      <span id="td" style="float:left">--&nbsp;</span>
+      <input id="registerEnd" style="margin-left:-6px ;width:9%" class="form-control select" type="text" placeholder="选择结束登记时间">
+      <div id="endTime"></div>
+      <select id="whyRegister" style="width:8.5%" class="select">
+        <option value="whyRegister" selected>请选择登记原因</option>
+        <option value="01">自住</option>
+        <option value="02">租住</option>
+        <option value="03">工作</option>
+      </select>
+      <select id="isFocus" style="width:10.2%" class="select">
+        <option value="isFocus"  selected disabled>是否为重点关注对象</option>
+        <option value="0">不是</option>
+        <option value="1">是</option>
+      </select>
+      <input id="pageSize" style="width:8%" type="text" class="form-control select" placeholder="输入每页记录数">
+      <button id="buttonSearch" type="button" class="btn btn-info select1">分页查询</button>
+      <button id="buttonSearch1" type="button" class="btn btn-info select1">
+      整体查询</button>
+     </div>               
+    </div>
+     <p id="message" class="message"></p>
+    <div id="tableDiv" class="tableDiv">
+      <h3 id="timeTittle" style="display:none"></h3>
+      <div id="button">
+       </div>
+      <table id="tableExcel" class="table table-hover">
+         <caption id="captionTittle"></caption>
+         <thead id="personThead">
+         </thead>
+         <tbody id="itemContainer">
+         </tbody>
+      </table>
+      <ul class="pagination pagination11" id="holder">
+      </ul>
+       
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/jquery.table2excel.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/main.js"></script>
+<script src="js/police.js"></script>
+<script src="js/searchPerson.js"></script>
+<script src="js/jqPaginator.min.js"></script>
+<script type="text/javascript">
+
+ $(document).ready(function(){
+    admin();
+    //超期未巡检暂时没做接口
+    // $("#overDue").attr('disabled','disabled');
+    $('#startTime').calendar({
+        trigger: '#regitsterStart',
+        zIndex: 999,
+        format: 'yyyy-mm-dd'
+});
+
+  $('#endTime').calendar({
+        trigger: '#registerEnd',
+        zIndex: 999,
+        format: 'yyyy-mm-dd'
+});
+     
+  var datas = JSON.parse(storage.getItem('police-info'));
+  var policeId = datas.police.poliId;
+  var statId= datas.police.statId;
+  var role1 = datas.police.poliRole;
+  console.log(policeId);
+  if(role1 == 01){
+
+    community01(policeId);
+    //小区选择时独立建筑应该禁用
+    $("#communityName").change(function(){
+        var communityId = $(this).children('option:selected').val();
+        if(communityId != "community"){
+             getCommunity1(communityId);
+
+             $("#loneBuilding").attr('disabled','disabled');
+        }else{
+            $('#loneBuilding').removeAttr('disabled');
+            var buildingName = $("#buildingName");
+                buildingName.html('');
+                var p = '<option  class="selected" value="building" selected >请选择楼宇...</option>';
+                buildingName.append(p);
+        }
+       
+    })
+    //独立建筑选择时小区和楼宇应该禁止
+    $("#loneBuilding").change(function(){
+        var loneBuildingName = $(this).children('option:selected').val();
+        if(loneBuildingName != "lone"){
+            $("#communityName").val("community");
+            $("#buildingName").val("building");
+            $("#communityName").attr('disabled','disabled');
+            $("#buildingName").attr('disabled','disabled');
+        }else{
+            $("#communityName").removeAttr('disabled');
+            $('#buildingName').removeAttr('disabled');
+        }
+    })
+    //房间分类变化时房间子类应该相应变化
+    $("#roomSelect").change(function(){
+        var roomSelectName = $(this).children('option:selected').val();
+            getRoomSub(roomSelectName);
+
+    })
+
+    $("#buttonSearch").click(function(){
+
+        searchPersonInfo(policeId);
+  })
+    $("#buttonSearch1").click(function(){
+        searchAllPersonInfo(policeId);
+    })
+}
+    
+if(role1 == 10){
+  community02(statId);
+    //小区选择时独立建筑应该禁用
+    $("#communityName").change(function(){
+        var communityId = $(this).children('option:selected').val();
+        if(communityId != "community"){
+             getCommunity1(communityId);
+
+             $("#loneBuilding").attr('disabled','disabled');
+        }else{
+            $('#loneBuilding').removeAttr('disabled');
+            var buildingName = $("#buildingName");
+                buildingName.html('');
+                var p = '<option  class="selected" value="building" selected >请选择楼宇...</option>';
+                buildingName.append(p);
+        }
+       
+    })
+    //独立建筑选择时小区和楼宇应该禁止
+    $("#loneBuilding").change(function(){
+        var loneBuildingName = $(this).children('option:selected').val();
+        if(loneBuildingName != "lone"){
+            $("#communityName").val("community");
+            $("#buildingName").val("building");
+            $("#communityName").attr('disabled','disabled');
+            $("#buildingName").attr('disabled','disabled');
+        }else{
+            $("#communityName").removeAttr('disabled');
+            $('#buildingName').removeAttr('disabled');
+        }
+    })
+    //房间分类变化时房间子类应该相应变化
+    $("#roomSelect").change(function(){
+        var roomSelectName = $(this).children('option:selected').val();
+            getRoomSub(roomSelectName);
+
+    })
+
+    $("#buttonSearch").click(function(){
+
+        searchPersonInfo(policeId);
+  })
+    $("#buttonSearch1").click(function(){
+        searchAllPersonInfo(policeId);
+    })
+
+}
+
+});
+
+	
+
+</script>
+</html>

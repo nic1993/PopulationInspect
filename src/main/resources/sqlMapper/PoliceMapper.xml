@@ -1,0 +1,1138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.lab.checkIn.mapper.PoliceMapper" >
+  <resultMap id="BaseResultMap" type="edu.hdu.lab.checkIn.model.Police" >
+    <id column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+    <result column="POLI_CODE" property="poliCode" jdbcType="CHAR" />
+    <result column="POLI_NAME" property="poliName" jdbcType="VARCHAR" />
+    <result column="POLI_PASS" property="poliPass" jdbcType="VARCHAR" />
+    <result column="POLI_ROLE" property="poliRole" jdbcType="CHAR" />
+    <result column="POLI_PHOTO" property="poliPhoto" jdbcType="VARCHAR" />
+    <result column="POLI_DISTRICT" property="poliDistrict" jdbcType="VARCHAR" />
+    <result column="TIME_LASTLOGIN" property="timeLastlogin" jdbcType="TIMESTAMP" />
+    <result column="IP_LASTLOGIN" property="ipLastlogin" jdbcType="VARCHAR" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="BIT" />
+    <result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+    <result column="STAT_ID" property="statId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    POLI_ID, POLI_CODE, POLI_NAME, POLI_PASS, POLI_ROLE, POLI_PHOTO, POLI_DISTRICT, TIME_LASTLOGIN, 
+    IP_LASTLOGIN, IS_DELETED, RAMARK, STAT_ID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.hdu.lab.checkIn.model.PoliceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from police
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from police
+    where POLI_ID = #{poliId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from police
+    where POLI_ID = #{poliId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hdu.lab.checkIn.model.PoliceExample" >
+    delete from police
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hdu.lab.checkIn.model.Police" >
+    insert into police (POLI_ID, POLI_CODE, POLI_NAME, 
+      POLI_PASS, POLI_ROLE, POLI_PHOTO, 
+      POLI_DISTRICT, TIME_LASTLOGIN, IP_LASTLOGIN, 
+      IS_DELETED, RAMARK, STAT_ID
+      )
+    values (#{poliId,jdbcType=INTEGER}, #{poliCode,jdbcType=CHAR}, #{poliName,jdbcType=VARCHAR}, 
+      #{poliPass,jdbcType=VARCHAR}, #{poliRole,jdbcType=CHAR}, #{poliPhoto,jdbcType=VARCHAR}, 
+      #{poliDistrict,jdbcType=VARCHAR}, #{timeLastlogin,jdbcType=TIMESTAMP}, #{ipLastlogin,jdbcType=VARCHAR}, 
+      #{isDeleted,jdbcType=BIT}, #{ramark,jdbcType=VARCHAR}, #{statId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hdu.lab.checkIn.model.Police" >
+    insert into police
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="poliId != null" >
+        POLI_ID,
+      </if>
+      <if test="poliCode != null" >
+        POLI_CODE,
+      </if>
+      <if test="poliName != null" >
+        POLI_NAME,
+      </if>
+      <if test="poliPass != null" >
+        POLI_PASS,
+      </if>
+      <if test="poliRole != null" >
+        POLI_ROLE,
+      </if>
+      <if test="poliPhoto != null" >
+        POLI_PHOTO,
+      </if>
+      <if test="poliDistrict != null" >
+        POLI_DISTRICT,
+      </if>
+      <if test="timeLastlogin != null" >
+        TIME_LASTLOGIN,
+      </if>
+      <if test="ipLastlogin != null" >
+        IP_LASTLOGIN,
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED,
+      </if>
+      <if test="ramark != null" >
+        RAMARK,
+      </if>
+      <if test="statId != null" >
+        STAT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="poliId != null" >
+        #{poliId,jdbcType=INTEGER},
+      </if>
+      <if test="poliCode != null" >
+        #{poliCode,jdbcType=CHAR},
+      </if>
+      <if test="poliName != null" >
+        #{poliName,jdbcType=VARCHAR},
+      </if>
+      <if test="poliPass != null" >
+        #{poliPass,jdbcType=VARCHAR},
+      </if>
+      <if test="poliRole != null" >
+        #{poliRole,jdbcType=CHAR},
+      </if>
+      <if test="poliPhoto != null" >
+        #{poliPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="poliDistrict != null" >
+        #{poliDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLastlogin != null" >
+        #{timeLastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipLastlogin != null" >
+        #{ipLastlogin,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="ramark != null" >
+        #{ramark,jdbcType=VARCHAR},
+      </if>
+      <if test="statId != null" >
+        #{statId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hdu.lab.checkIn.model.PoliceExample" resultType="java.lang.Integer" >
+    select count(*) from police
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update police
+    <set >
+      <if test="record.poliId != null" >
+        POLI_ID = #{record.poliId,jdbcType=INTEGER},
+      </if>
+      <if test="record.poliCode != null" >
+        POLI_CODE = #{record.poliCode,jdbcType=CHAR},
+      </if>
+      <if test="record.poliName != null" >
+        POLI_NAME = #{record.poliName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poliPass != null" >
+        POLI_PASS = #{record.poliPass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poliRole != null" >
+        POLI_ROLE = #{record.poliRole,jdbcType=CHAR},
+      </if>
+      <if test="record.poliPhoto != null" >
+        POLI_PHOTO = #{record.poliPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="record.poliDistrict != null" >
+        POLI_DISTRICT = #{record.poliDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timeLastlogin != null" >
+        TIME_LASTLOGIN = #{record.timeLastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ipLastlogin != null" >
+        IP_LASTLOGIN = #{record.ipLastlogin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDeleted != null" >
+        IS_DELETED = #{record.isDeleted,jdbcType=BIT},
+      </if>
+      <if test="record.ramark != null" >
+        RAMARK = #{record.ramark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statId != null" >
+        STAT_ID = #{record.statId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update police
+    set POLI_ID = #{record.poliId,jdbcType=INTEGER},
+      POLI_CODE = #{record.poliCode,jdbcType=CHAR},
+      POLI_NAME = #{record.poliName,jdbcType=VARCHAR},
+      POLI_PASS = #{record.poliPass,jdbcType=VARCHAR},
+      POLI_ROLE = #{record.poliRole,jdbcType=CHAR},
+      POLI_PHOTO = #{record.poliPhoto,jdbcType=VARCHAR},
+      POLI_DISTRICT = #{record.poliDistrict,jdbcType=VARCHAR},
+      TIME_LASTLOGIN = #{record.timeLastlogin,jdbcType=TIMESTAMP},
+      IP_LASTLOGIN = #{record.ipLastlogin,jdbcType=VARCHAR},
+      IS_DELETED = #{record.isDeleted,jdbcType=BIT},
+      RAMARK = #{record.ramark,jdbcType=VARCHAR},
+      STAT_ID = #{record.statId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hdu.lab.checkIn.model.Police" >
+    update police
+    <set >
+      <if test="poliCode != null" >
+        POLI_CODE = #{poliCode,jdbcType=CHAR},
+      </if>
+      <if test="poliName != null" >
+        POLI_NAME = #{poliName,jdbcType=VARCHAR},
+      </if>
+      <if test="poliPass != null" >
+        POLI_PASS = #{poliPass,jdbcType=VARCHAR},
+      </if>
+      <if test="poliRole != null" >
+        POLI_ROLE = #{poliRole,jdbcType=CHAR},
+      </if>
+      <if test="poliPhoto != null" >
+        POLI_PHOTO = #{poliPhoto,jdbcType=VARCHAR},
+      </if>
+      <if test="poliDistrict != null" >
+        POLI_DISTRICT = #{poliDistrict,jdbcType=VARCHAR},
+      </if>
+      <if test="timeLastlogin != null" >
+        TIME_LASTLOGIN = #{timeLastlogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ipLastlogin != null" >
+        IP_LASTLOGIN = #{ipLastlogin,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeleted != null" >
+        IS_DELETED = #{isDeleted,jdbcType=BIT},
+      </if>
+      <if test="ramark != null" >
+        RAMARK = #{ramark,jdbcType=VARCHAR},
+      </if>
+      <if test="statId != null" >
+        STAT_ID = #{statId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where POLI_ID = #{poliId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.Police" >
+    update police
+    set POLI_CODE = #{poliCode,jdbcType=CHAR},
+      POLI_NAME = #{poliName,jdbcType=VARCHAR},
+      POLI_PASS = #{poliPass,jdbcType=VARCHAR},
+      POLI_ROLE = #{poliRole,jdbcType=CHAR},
+      POLI_PHOTO = #{poliPhoto,jdbcType=VARCHAR},
+      POLI_DISTRICT = #{poliDistrict,jdbcType=VARCHAR},
+      TIME_LASTLOGIN = #{timeLastlogin,jdbcType=TIMESTAMP},
+      IP_LASTLOGIN = #{ipLastlogin,jdbcType=VARCHAR},
+      IS_DELETED = #{isDeleted,jdbcType=BIT},
+      RAMARK = #{ramark,jdbcType=VARCHAR},
+      STAT_ID = #{statId,jdbcType=INTEGER}
+    where POLI_ID = #{poliId,jdbcType=INTEGER}
+  </update>
+
+	<!-- 用户函数 -->
+
+	<!-- PoliceBasic map -->
+
+	<resultMap id="PoliceBasicMap" type="edu.hdu.lab.checkIn.dto.PoliceBasic">
+		<id column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+		<result column="POLI_CODE" property="poliCode" jdbcType="CHAR" />
+		<result column="POLI_NAME" property="poliName" jdbcType="VARCHAR" />
+		<result column="POLI_PASS" property="poliPass" jdbcType="VARCHAR" />
+		<result column="POLI_ROLE" property="poliRole" jdbcType="CHAR" />
+		<result column="POLI_PHOTO" property="poliPhoto" jdbcType="VARCHAR" />
+		<result column="POLI_DISTRICT" property="poliDistrict"
+			jdbcType="VARCHAR" />
+		<result column="TIME_LASTLOGIN" property="timeLastlogin"
+			jdbcType="TIMESTAMP" />
+		<result column="IP_LASTLOGIN" property="ipLastlogin" jdbcType="VARCHAR" />
+		<result column="IS_DELETED" property="isDeleted" jdbcType="BIT" />
+		<result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+		<result column="STAT_ID" property="statId" jdbcType="INTEGER" />
+		<result column="POLI_ROLE_NAME" property="poliRoleName"
+			jdbcType="VARCHAR" />
+		<result column="STAT_NAME" property="statName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 用户登录 -->
+
+	<select id="login" parameterType="java.lang.String" resultMap="PoliceBasicMap">
+		select p.*,d.ITEM_NAME as POLI_ROLE_NAME,b.STAT_NAME from policestation as b,police as p,dictionary as d
+		where p.STAT_ID= b.STAT_ID
+		and d.DICT_CLASS="JYJS" and p.POLI_ROLE=
+		d.DICT_ITEM
+		and p.POLI_CODE = #{user,jdbcType=VARCHAR};
+	</select>
+	<!-- adsdfadfasdfasdfas -->
+	<select id="getOverData" parameterType="java.lang.Integer"
+		resultMap="OverDataMap">
+		select count(distinct r.ROOM_ID) as
+		room_overinspect,
+		count(distinct b.BUIL_ID) as
+		buil_overinspect,count(distinct
+		c.COMM_ID) as
+		comm_overinspect
+		from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join community as
+		c on c.COMM_ID=b.COMM_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where
+		(c.POLI_ID=#{poliId,jdbcType=INTEGER} or
+		b.POLI_ID=#{poliId,jdbcType=INTEGER}) and
+		r.BUIL_ID=b.BUIL_ID 
+		and c.COMM_ID=b.COMM_ID and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	
+	<select id="getQuickOverData" parameterType="java.lang.Integer"
+		resultMap="OverDataMap">
+		select count(distinct r.ROOM_ID) as
+		room_overinspect,
+		count(distinct b.BUIL_ID) as
+		buil_overinspect,count(distinct
+		c.COMM_ID) as
+		comm_overinspect
+		from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join community as
+		c on c.COMM_ID=b.COMM_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where
+		(c.POLI_ID=#{poliId,jdbcType=INTEGER} or
+		b.POLI_ID=#{poliId,jdbcType=INTEGER}) and
+		r.BUIL_ID=b.BUIL_ID 
+		and c.COMM_ID=b.COMM_ID and
+		(((to_days(now())-to_days(r.TIME_LASTINSPECT))&lt;=s.PARA_VALUE 
+		and (to_days(now())-to_days(r.TIME_LASTINSPECT))>(s.PARA_VALUE-2))
+		or
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))&lt;=rs.PARA_VALUE
+		and (to_days(now())-to_days(r.TIME_LASTINSPECT))>(rs.PARA_VALUE-2)))
+	</select>
+	
+	
+
+	<resultMap type="edu.hdu.lab.checkIn.dto.OverData" id="OverDataMap">
+		<result column="room_overinspect" property="room_overinspect"
+			jdbcType="INTEGER" />
+		<result column="buil_overinspect" property="buil_overinspect"
+			jdbcType="INTEGER" />
+		<result column="comm_overinspect" property="comm_overinspect"
+			jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- adsdfadfasdfasdfas -->
+	<!-- 获取点击树时 -->
+	<!-- 通过派出所编号id查询警员所管辖的所有小区 -->
+	<select id="getCommByOffi" parameterType="java.lang.Integer"
+		resultMap="CommunityMap">
+		select * from community as c,police as p
+		where p.STAT_ID =
+		#{statId,jdbcType=INTEGER}
+		and POLI_ROLE="01"
+		and c.POLI_ID=p.POLI_ID;
+	</select>
+
+	<resultMap id="CommunityMap" type="edu.hdu.lab.checkIn.model.Community">
+		<id column="COMM_ID" property="commId" jdbcType="INTEGER" />
+		<result column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+		<result column="COMM_NAME" property="commName" jdbcType="VARCHAR" />
+		<result column="COMM_GPSLIST" property="commGpslist" jdbcType="VARCHAR" />
+		<result column="IS_DELETED" property="isDeleted" jdbcType="BIT" />
+		<result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- adfasdfasd -->
+
+	<select id="getbBuilByOffi" parameterType="java.lang.Integer"
+		resultMap="BuildingMap">
+		select * from building as b,police as p
+		where p.STAT_ID =
+		#{statId,jdbcType=INTEGER}
+		and POLI_ROLE="01"
+		and b.POLI_ID=p.POLI_ID;
+	</select>
+
+	<resultMap id="BuildingMap" type="edu.hdu.lab.checkIn.model.Building">
+		<id column="BUIL_ID" property="builId" jdbcType="INTEGER" />
+		<result column="COMM_ID" property="commId" jdbcType="INTEGER" />
+		<result column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+		<result column="BUIL_NAME" property="builName" jdbcType="VARCHAR" />
+		<result column="BUIL_GPSE" property="builGpse" jdbcType="REAL" />
+		<result column="BUIL_GPSN" property="builGpsn" jdbcType="REAL" />
+		<result column="BUIL_TYPE" property="builType" jdbcType="CHAR" />
+		<result column="IS_DELETED" property="isDeleted" jdbcType="BIT" />
+		<result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<!-- 根据buil_id返回单元有哪些单元 -->
+	<select id="getUnitByBuidid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select distinct ROOM_UNIT from room
+		where BUIL_ID =
+		#{builid,jdbcType=INTEGER}
+		order by ROOM_UNIT;
+	</select>
+
+	<!-- 根据buil_id返回根据单元和buil_id返回楼层 -->
+	<select id="getFloorByBuididAndUnit" resultType="java.lang.Integer">
+		select distinct
+		ROOM_FLOOR from room
+		where BUIL_ID =
+		#{builid,jdbcType=INTEGER}
+		and
+		ROOM_UNIT =
+		#{unit,jdbcType=INTEGER}
+		order by ROOM_FLOOR;
+	</select>
+
+	<!-- 根据buil_id返回单元数和房间数 -->
+	<select id="getRoomNumAndUnitbyBuilid" parameterType="java.lang.Integer"
+		resultMap="RoomNumAndUnitNumMap">
+		select count(distinct ROOM_UNIT) as unit_number,
+		count(*) as
+		room_number from room as r
+		where r.BUIL_ID=#{builid,jdbcType=INTEGER};
+	</select>
+
+	<resultMap id="RoomNumAndUnitNumMap" type="java.util.HashMap">
+		<result column="unit_number" property="unit_number" jdbcType="INTEGER" />
+		<result column="room_number" property="room_number" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 根据buil_id获取未巡检房间数 -->
+	<select id="getOverRoomNumbyBuilid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.ROOM_ID) from room as r left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+
+	<!-- 根据buil_id获取总人数 -->
+	<select id="getPersonNumbyBuilid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(*) from room as r,person as p
+		where
+		r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		and p.ROOM_ID = r.ROOM_ID
+	</select>
+	<!-- 根据buil_id获取重点关注人数 -->
+	<select id="getImpoPersonNumbyBuilid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(*) from room as r,person as p
+		where
+		r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		and p.ROOM_ID = r.ROOM_ID
+		and
+		p.IS_FOCUS > 1
+		and p.IS_DELETED=0
+		and r.IS_DELETED=0
+	</select>
+	<!-- 根据buil_id获取重点关注房间数 -->
+	<select id="getImpoRoomNumbyBuilid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.ROOM_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID
+		where
+		r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		and p.ROOM_ID = r.ROOM_ID
+		and (r.IS_FOCUS > 0
+		or p.IS_FOCUS > 0)
+	</select>
+	
+	<!-- 根据buil_id获取房间各种分类数 -->
+	<select id="getRoomSortNumbyBuilid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_CLASS as roomclass,count(*) as number from
+		room as r
+		where r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		group by
+		r.ROOM_CLASS;
+	</select>
+
+	<!-- 根据buil_id获取房间各种子分类数 -->
+	<select id="getRoomSubSortNumbyBuilid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_SUBCLASS as roomsubclass,count(*) as number from
+		room as r
+		where r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		group by
+		r.ROOM_SUBCLASS;
+	</select>
+
+	<resultMap id="RoomSortNumMap" type="java.util.HashMap">
+		<result column="roomclass" property="roomclass" jdbcType="VARCHAR" />
+		<result column="number" property="num" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 根据buil_id获取自住人数/租住人数/工作人数 -->
+	<select id="getPersSortNumbyBuilid" parameterType="java.lang.Integer"
+		resultMap="PersSortNumMap">
+		select p.WHY_REGISTER ,count(*) as num from room as r,person
+		as p
+		where r.BUIL_ID=#{builid,jdbcType=INTEGER}
+		and p.ROOM_ID =
+		r.ROOM_ID
+		group by p.WHY_REGISTER;
+	</select>
+
+	<resultMap id="PersSortNumMap" type="java.util.HashMap">
+		<result column="WHY_REGISTER" property="why" jdbcType="VARCHAR" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+	</resultMap>
+
+	<!-- 根据buil_id获取空房数 -->
+	<select id="getEmptyRoomNumbyBuilid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(ROOM_ID) from 
+		(select room.ROOM_ID,person.PERS_ID from room left join person on room.ROOM_ID=person.ROOM_ID 
+		where room.BUIL_ID=#{builid,jdbcType=INTEGER})
+		as b WHERE PERS_ID IS NULL;
+	</select>
+	
+	<!-- 根据comm_id获取房间数 -->
+	<select id="getRoomNumbyCommid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(*) from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID
+		where b.COMM_ID =#{commid,jdbcType=INTEGER}
+	</select>
+	<!-- 根据comm_id获取重点房间数 -->
+	<select id="getImpoRoomNumbyCommid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct r.ROOM_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID 
+		where
+		b.COMM_ID =#{commid,jdbcType=INTEGER}
+		and b.BUIL_ID = r.BUIL_ID
+		and (r.IS_FOCUS > 0
+		or p.IS_FOCUS > 0)
+	</select>
+	<!-- 根据comm_id获取总人数 -->
+	<select id="getPersonNumbyCommid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct p.PERS_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID
+		where
+		b.COMM_ID =#{commid,jdbcType=INTEGER}
+		and b.BUIL_ID = r.BUIL_ID
+		and p.ROOM_ID = r.ROOM_ID
+	</select>
+	<!-- 根据comm_id获取重点人数 -->
+	<select id="getImpoPersonNumbyCommid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct p.PERS_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID
+		where
+		b.COMM_ID =#{commid,jdbcType=INTEGER}
+		and b.BUIL_ID = r.BUIL_ID
+		and p.ROOM_ID = r.ROOM_ID
+		and p.IS_FOCUS > 0
+	</select>
+
+	<!-- 根据comm_id获取房间各种分类数 -->
+	<select id="getRoomSortNumbyCommid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_CLASS as roomclass,count(*) as number from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID
+		where b.COMM_ID =#{commid,jdbcType=INTEGER}
+		group
+		by r.ROOM_CLASS;
+	</select>
+	
+	<!-- 根据comm_id获取房间各种分类数 -->
+	<select id="getRoomSubSortNumbyCommid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_SUBCLASS as roomsubclass,count(*) as number from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID
+		where b.COMM_ID =#{commid,jdbcType=INTEGER}
+		group
+		by r.ROOM_SUBCLASS;
+	</select>
+
+	<!-- 根据comm_id获取自住人数/租住人数/工作人数 -->
+	<select id="getPersSortNumbyCommid" parameterType="java.lang.Integer"
+		resultMap="PersSortNumMap">
+		select p.WHY_REGISTER ,count(*) as num from room as r,person
+		as p,building as b
+		where b.COMM_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and p.ROOM_ID =
+		r.ROOM_ID
+		group by p.WHY_REGISTER;
+	</select>
+
+	<!-- 根据Commid获取有人房数 -->
+	<select id="getEmptyRoomNumbyCommid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(ROOM_ID) from 
+		(select r.ROOM_ID,p.PERS_ID from room as r left join person as p on r.ROOM_ID=p.ROOM_ID 
+		left join building as b on b.BUIL_ID=r.BUIL_ID 
+		where b.COMM_ID=#{commid,jdbcType=INTEGER}
+		and b.BUIL_ID=r.BUIL_ID )
+		as t WHERE PERS_ID IS NULL;
+	</select>
+	
+	<!-- 根据comm_id获取未巡检建筑 -->
+	<select id="getOverBuilNumbyCommid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.BUIL_ID) 
+		from room as r left join building as b
+		on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where
+		b.COMM_ID=#{commid,jdbcType=INTEGER} and
+		r.BUIL_ID=b.BUIL_ID 
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	<!-- 根据comm_id获取重点关注 -->
+	<select id="getImpoBuilNumbyCommid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.BUIL_ID) from room as r left join building as b
+		on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID
+		where
+		b.COMM_ID =#{commid,jdbcType=INTEGER}
+		and b.BUIL_ID = r.BUIL_ID
+		and (r.IS_FOCUS > 0
+		or p.IS_FOCUS > 0)
+	</select>
+	
+	<select id="getOverRoomNumbyCommid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.ROOM_ID) from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where b.COMM_ID=#{commid,jdbcType=INTEGER}
+		and r.BUIL_ID=b.BUIL_ID
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE
+		or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	
+	<!-- 根据Statid获取独立的comm——building -->
+	<select id="getCommBuilByOffi" parameterType="java.lang.Integer"
+		resultMap="BuildingMap">
+		select * from community as c,police as p,building as b
+		where
+		p.STAT_ID =
+		#{statId,jdbcType=INTEGER}
+		and POLI_ROLE="01"
+		and
+		c.POLI_ID=p.POLI_ID
+		and b.COMM_ID = c.COMM_ID
+	</select>
+
+	<!-- 根据stat_id获取房间各种分类数 -->
+	<select id="getRoomSortNumbyStatid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_CLASS as roomclass,count(distinct r.ROOM_ID)
+		as number from
+		room as r,building as b,police as p,community as c
+		where
+		p.STAT_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		group
+		by r.ROOM_CLASS;
+	</select>
+
+	<!-- 根据stat_id获取自住人数/租住人数/工作人数 -->
+	<select id="getPersSortNumbyStatid" parameterType="java.lang.Integer"
+		resultMap="PersSortNumMap">
+		select pe.WHY_REGISTER ,count(distinct pe.PERS_ID) as num
+		from
+		room as r,person as pe,building as b,community c,police po
+		where po.STAT_ID
+		=#{commid,jdbcType=INTEGER}
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		pe.ROOM_ID =
+		r.ROOM_ID
+		group by pe.WHY_REGISTER;
+	</select>
+
+
+	<!-- 根据STAT_ID获取未巡检建筑 -->
+	<select id="getOverBuilNumbyStatid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.BUIL_ID) from
+		room as r,building as
+		b,police as p,community as c,sysparam as s
+		where p.STAT_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		to_days(now())-to_days(r.TIME_LASTINSPECT)>30;
+	</select>
+
+	<!-- 根据Statid获取重点关注buil -->
+	<select id="getImpoBuilNumbyStatid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.BUIL_ID) from room as r,building as
+		b,police as p,community as c
+		where p.STAT_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		r.IS_FOCUS >0
+		or
+		p.IS_FOCUS >0
+	</select>
+	
+	<!-- 根据stat_id获取小区数 -->
+	<select id="getCommNumbyStatid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(c.COMM_ID) from community as c,police as p
+		where
+		p.STAT_ID =
+		#{statId,jdbcType=INTEGER}
+		and POLI_ROLE="01"
+		and
+		c.POLI_ID=p.POLI_ID
+	</select>
+	
+	<!-- 根据stat_id获取超期未巡检小区数 -->
+	<select id="getOverCommNumbyStatid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.COMM_ID) from
+		room as r,building as
+		b,community as c,sysparam as s,
+		police as p
+		where p.STAT_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		to_days(now())-to_days(r.TIME_LASTINSPECT)>30;
+	</select>
+	<!-- 根据Statid获取重点关注小区数 -->
+	<select id="getImpoCommNumbyStatid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.COMM_ID) from room as r,building as
+		b,community as c,
+		police as p
+		where p.STAT_ID =#{commid,jdbcType=INTEGER}
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		r.IS_FOCUS >0
+		or
+		p.IS_FOCUS >0
+	</select>
+	
+	<!-- 根据poil_id获取总人数 -->
+	<select id="getRoomNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct r.ROOM_ID) from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID left join community as c on c.COMM_ID=b.COMM_ID
+		where c.COMM_ID=b.COMM_ID
+		and r.BUIL_ID = b.BUIL_ID
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+	</select>
+	
+	<!-- 根据poil_id获取buil -->
+	<select id="getBuilbyPoliid" parameterType="java.lang.Integer"
+		resultMap="BuildingMap">
+		select distinct b.* from community as c,police as
+		p,building as b
+		where 
+		POLI_ROLE="01"
+		and
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+	</select>
+
+	<!-- 根据POLI_ID获取房间各种分类数 -->
+	<select id="getRoomSortNumbyPoliid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_CLASS as roomclass,count(distinct r.ROOM_ID)
+		as number from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID left join community as c on c.COMM_ID=b.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		group
+		by r.ROOM_CLASS;
+	</select>
+	
+	<!-- 根据POLI_ID获取房间各种子分类数 -->
+	<select id="getRoomSubSortNumbyPoliid" parameterType="java.lang.Integer"
+		resultMap="RoomSortNumMap">
+		select r.ROOM_SUBCLASS as roomsubclass,count(distinct r.RAMARk)
+		as number from
+		room as r left join building as b on r.BUIL_ID = b.BUIL_ID left join community as c on c.COMM_ID=b.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		group
+		by r.ROOM_SUBCLASS;
+	</select>
+	
+	<!-- 根据POLI_ID获取自住人数/租住人数/工作人数 -->
+	<select id="getPersSortNumbyPoliid" parameterType="java.lang.Integer"
+		resultMap="PersSortNumMap">
+		select pe.WHY_REGISTER ,count(distinct pe.PERS_ID) as num
+		from
+		room as r,person as pe,building as b,community c
+		where 
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		r.BUIL_ID = b.BUIL_ID
+		and
+		pe.ROOM_ID =
+		r.ROOM_ID
+		group by pe.WHY_REGISTER;
+	</select>
+	<!-- 根据POLI_ID获取超期未巡检的房间数 -->
+	<select id="getOverRoomNumByPoliId" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.ROOM_ID) from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where 
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and r.BUIL_ID=b.BUIL_ID
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE
+		or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	
+	<!-- 根据Poliid获取重点房间数 -->
+	<select id="getImpoRoomNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct r.ROOM_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID 
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID
+		and (r.IS_FOCUS > 0
+		or p.IS_FOCUS > 0)
+	</select>
+	
+	 
+	<select id="getPersonNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct p.PERS_ID) from room as r left join person as p on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID
+		and p.ROOM_ID = r.ROOM_ID
+	</select>
+	
+	<!--根据Poliid获取重点人数-->
+	<select id="getImpoPersonNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(distinct p.PERS_ID) from person as p left join room as r on p.ROOM_ID = r.ROOM_ID 
+		left join building as b on b.BUIL_ID = r.BUIL_ID
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID
+		and p.ROOM_ID = r.ROOM_ID
+		and p.IS_FOCUS > 0
+	</select>
+	
+	<!--根据Poliid获取有人房数 -->
+	<select id="getEmptyRoomNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="Integer">
+		select count(ROOM_ID) from 
+		(select r.ROOM_ID,p.PERS_ID from room as r left join person as p on r.ROOM_ID=p.ROOM_ID 
+		left join building as b on b.BUIL_ID=r.BUIL_ID 
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID=r.BUIL_ID )
+		as t WHERE PERS_ID IS NULL;
+	</select>
+	
+	<!-- 根据POLI_ID获取未巡检建筑 -->
+	<select id="getOverBuilNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct r.BUIL_ID) from room as r left join building as b
+		on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID 
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	
+	<!-- 根据POLI_ID获取重点关注buil -->
+	<select id="getImpoBuilNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.BUIL_ID) from room as r left join person as p on r.ROOM_ID=p.ROOM_ID  left join building as b on b.BUIL_ID=r.BUIL_ID  left join community as c on c.COMM_ID=b.COMM_ID
+		where 
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID 
+		and
+		(r.IS_FOCUS > 0
+		or
+		p.IS_FOCUS > 0)
+	</select>
+	
+	
+	<!-- 根据POLI_ID获取未巡检小区数 -->
+	<select id="getOverCommNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.COMM_ID) from room as r left join building as b
+		on r.BUIL_ID=b.BUIL_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		left join community as c on b.COMM_ID=c.COMM_ID
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and b.COMM_ID=c.COMM_ID
+		and b.BUIL_ID = r.BUIL_ID 
+		and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+	<!-- 根据Poli_id获取重点关注小区数 -->
+	<select id="getImpoCommNumbyPoliid" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(distinct b.COMM_ID) from room as r left join person as p on r.ROOM_ID=p.ROOM_ID  left join building as b on b.BUIL_ID=r.BUIL_ID  left join community as c on c.COMM_ID=b.COMM_ID
+		where 
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or
+		b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		and
+		r.ROOM_ID=p.ROOM_ID
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		(r.IS_FOCUS > 0
+		or
+		p.IS_FOCUS > 0)
+	</select>
+	
+	
+	<select id="countRoom" 
+		resultType="java.lang.Integer">
+		select count(r.ROOM_ID)
+		 from  room as r left join building as b on b.BUIL_ID=r.BUIL_ID  left join community as c on c.COMM_ID=b.COMM_ID
+		<if test="comm_id!=null">
+		where
+		b.COMM_ID=#{comm_id,jdbcType=INTEGER}
+		</if>
+		<if test="buil_id!=null">
+		where
+		r.BUIL_ID=#{buil_id,jdbcType=INTEGER}
+		</if>
+		<if test="poli_id!=null">
+		where
+		(c.POLI_ID=#{poli_id,jdbcType=INTEGER}
+		or b.POLI_ID=#{poli_id,jdbcType=INTEGER})
+		</if>
+		<if test="room_class!=null">
+		and
+		r.ROOM_CLASS=#{room_class,jdbcType=VARCHAR}
+		</if>
+		<if test="room_subclass!=null">
+		and
+		r.ROOM_SUBCLASS=#{room_subclass,jdbcType=VARCHAR}
+		</if>
+		<!-- 重点行业 -->
+		<if test="room_isfocus!=null and room_isfocus==1">
+		and
+		r.IS_FOCUS>0
+		</if>
+		<!--重点单位查询  -->
+		<if test="danger!=null">
+		<if test="danger==1">
+		and
+		r.IS_DRUG=1
+		</if>
+		<if test="danger==2">
+		and
+		r.IS_BOOM=1
+		</if>
+		<if test="danger==3">
+		and
+		r.IS_TOXIC=1
+		</if>
+		<if test="danger==4">
+		and
+		r.IS_DANGER=1
+		</if>
+		</if>
+		<if test="focus_level!=null">
+		and
+		r.IS_FOCUS=#{focus_level,jdbcType=INTEGER}
+		</if>
+	</select>
+</mapper>

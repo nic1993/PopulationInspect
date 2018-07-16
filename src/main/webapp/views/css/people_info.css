@@ -1,0 +1,177 @@
+html,body{
+    height: 100%;
+    overflow: auto;
+    background-color: #e8edf3;
+}
+.people-info-details{
+    margin-top: 10px;
+    height: auto;
+    min-height: 450px;
+    border:none;
+}
+.people-info-body span{
+    height: 30px;
+    line-height: 30px;
+}
+.plot,.building,.house-c{
+    padding: 10px;
+    margin-top: 20px;
+    height: auto;
+    overflow: auto;
+    border: 1px solid #d2d6d9;
+}
+.plot-chart,.building-chart,.house-chart{
+    height: 200px;
+    border: 1px solid #d2d6d9;
+}
+
+.li-h{
+	list-style-type: none;
+}
+
+.plot-info,.building-info,.house-c-info{
+    overflow-y: scroll; 
+}
+
+.form-body{
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d2d6d9;
+}
+.check-log-box{
+	width: 70%;
+	margin:0 15%;
+}
+.check-log-box1{
+	width: 70%;
+	margin:0 45%;
+}
+.check-log{
+    height: 100%;
+    min-height: 600px;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+	/* 1px solid #d2d6d9*/
+}
+.caption>span.caption-c{
+	font-size:30px;
+}
+div.date-input-box{
+	display: inline-block;
+	font-size: 14px;
+	float: right;
+}
+.check-btn{
+	margin-left: 20px;
+}
+#people-info{
+	width:60%;
+	height:600px;
+	margin-left:20%;
+	margin-top:50px;
+	font-size:20px;
+}
+#people-info span{
+	display:block;
+	margin:8px 8px 8px 350px;
+	position:relative;
+	top:-115px;
+	color:rgb(13,35,76);
+}
+#people-img{
+	height:100px;
+	margin-right:10%;
+}
+
+#people-add-main{
+	width:60%;
+	height:500px;
+	margin-top:50px;
+	margin-left:20%;
+	padding-left:5%;
+}
+#people-add-main span{
+	position:relative;
+	left:320px;
+	top:-261px;
+}
+#people-add-main ul{
+	list-style-type:none;
+}
+
+#people-add-main ul li{
+	padding:10px;
+}
+.add-text{
+	width:200px;
+}
+#add-ul-l{
+	float:left;
+}
+#add-ul-r{
+	position:relative;
+	top:86px;
+	left:50px;
+}
+#add-name{
+	position:relative;
+	left:41px;
+}
+#add-sex{
+	position:relative;
+	left:43px;
+}
+#add-pho{
+	position:relative;
+	left:42px;
+}
+#add-time{
+	position:relative;
+	left:14px;
+}
+#add-rea{
+	position:relative;
+	left:69px;
+}
+#add-jzd{
+	position:relative;
+	left:83px;
+}
+#add-gzd{
+	position:relative;
+	left:83px;
+}
+#add-hj{
+	position:relative;
+	left:55px;
+}
+#add-bz{
+	position:relative;
+	left:42px;	
+}
+#add-submit{
+	width:80px;
+	height:40px;
+	position:relative;
+	left:140px;
+	background:rgb(40,30,120);
+	color:#FFF;
+	border:solid 1px rgb(40,30,120);
+	border-radius:3px;	
+}
+#add-qx{
+	width:80px;
+	height:40px;
+	position:relative;
+	left:176px;
+	border:solid 1px rgb(40,30,120);
+	border-radius:3px;
+	background:rgb(40,30,120);
+	color:#FFF;
+}
+.add-sex{
+	margin-left:44px;
+	display:inline;
+	padding:5px;	
+}

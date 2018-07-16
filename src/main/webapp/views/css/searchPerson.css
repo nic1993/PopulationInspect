@@ -1,0 +1,103 @@
+body{
+	background-color: #e8edf3;
+	overflow-y: scroll;
+}
+.navbar-my{
+	margin-bottom:12px;
+}
+
+.select{
+	margin-left:12px;
+	width:10%;
+	float:left;
+	height:26px;
+	 color: #999;
+    opacity: 1;
+}
+.selected{
+	color:#999;
+}
+.community{
+	clear:both;
+	height:28px;
+}
+.person{
+	border-top:1px dashed #333;
+    border-bottom:1px solid #333;
+	clear:both;
+	margin-top:10px;
+}
+.inner{
+  margin-top:10px;
+  height:28px;
+  margin-bottom:10px;
+}
+.select1{
+	margin-left:12px;
+	width:4%;
+	float:left;
+	height:26px;
+	line-height: 26px;
+	color:#333;
+	padding:0;
+}
+.tableDiv{
+	margin:0 3%;
+	margin-top:15px;
+	clear:both;
+	font-size:12px;
+	text-align: center;
+}
+th{
+	text-align:center;
+}
+caption{
+	color: #333;
+	font-size:16px;
+	font-weight: 900;
+	text-align: center;
+}
+//分页样式
+.aBtn{
+	 background-color: #ffffff;
+    border: 1px solid #c1c1c1;
+    color: #555555;
+    padding: 4px 8px 3px;
+    text-align: center;
+    text-decoration: none;
+}
+.bold{
+	font-weight: 900；
+}
+.aBtn:hover{
+	background-color: #fe7c2c;
+	border:1px solid #f75a00;
+	color:#fff;
+}
+.btnSelect{
+	 background-color: #fe7c2c;
+    border: 1px solid #f75a00;
+    color: #ffffff;
+    padding: 4px 8px 3px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.pagination11{
+	width:800px;
+	margin-left:30%;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+#button{
+	margin-left:0;
+}
+.message{
+	text-align:center;
+	position:relative;
+	top:30px;
+	font-size:16px;
+	font-weight: 900;
+	color:red;
+}

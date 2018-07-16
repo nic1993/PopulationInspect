@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootstrap-multiselect.css">
+</head>
+<body>
+<div class="wraper">
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a><!--home-->
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="login.html" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+<div class="top">
+        <ul class="pull-left">
+            <li>
+                <label class=""><i class="icomoon" aria-hidden="true">&#xe900;</i> 首页</label>
+            </li>
+            <li>
+                <label class=""><i class="icomoon" aria-hidden="true">&#xe912;</i> <a class="check-log-btn" href="check_log.html" target="_blank">巡检日志</a></label>
+            </li>
+            <li>
+                <label class=""><i class="icomoon" aria-hidden="true">&#xe905;</i> <a class="check-log-btn" href="search_person.html" target="_blank">人员查询</a></label>
+            </li>
+        </ul>
+</div>
+
+<div class="main">
+    <!-- 小区添加 -->
+                            <div class="modal fade" id="myModal001" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel001" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel001">
+                                                小区添加
+                                                <span id="communityMessage"></span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form id="addCommunity" action="../community/add.do" target="addComm" method="post">
+                                         <input type="hidden" id="policeIdhidden" value="" name="poli_id">
+                                            <p>
+                                                <label for="xiaoquName">小区名：</label>
+                                                <input type="text" id="xiaoquName" name="commName" placeholder="请输入住宅小区名称"  required="required" />
+                                                <input id="callback" style="display:none" class="form-control" name="callback" value="parent.addCommunity"/>
+                                            </p>
+                                            <p>
+                                                <label for="jingdu">位置坐标：</label>
+                                                <input type="text" name="commGpslist" id="jingdu"  />
+                                            </p>
+                                            
+                                            <p>
+                                                <label for="userSign">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="userSign"></textarea>
+                                            </p>
+                                             <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                保存
+                                            </button>
+                                             <iframe name="addComm" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 小区信息修改 -->
+                            <div class="modal fade" id="myModal001edit" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel001" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel001edit">
+                                                小区信息修改
+                                                <span id="communityEdithello"></span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form action="../community/edit.do" target="communityEdithello1" method="post">
+                                        <input type="hidden" id="hiddenPoliceId1" value="" name="poli_id">
+                                        <input type="hidden" id="hiddenCommId" value="" name="comm_id">
+                                            <p>
+                                                <label for="xiaoquName1">小区名：</label>
+                                                <input type="text" id="xiaoquName1" name="commName">
+                                                 <input id="callback" style="display:none" class="form-control" name="callback" value="parent.editCommunity"/>
+                                            </p>
+                                            <p>
+                                                <label for="jingdu1">位置坐标：</label>
+                                                <input type="text" name="commGpslist" id="jingdu1"/>
+                                            </p>
+                                          
+                                            <p>
+                                                <label for="userSign1">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="userSign1"></textarea>
+                                            </p>
+                                             <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                提交更改
+                                            </button>
+                                            <iframe name="communityEdithello1" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 楼宇添加 -->
+                            <div class="modal fade" id="myModal002" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel002" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel002">
+                                                楼宇添加
+                                                 <span id="buildingMessage"></span>
+                                                  <input type="hidden" id="communityNamehidden" value="">
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form action="../building/add.do" target="addBuilding" method="post">
+                                            <p>
+                                                <label for="xiaoquName">楼宇名：</label>
+                                                <input type="text" id="louyuName" name="builName" placeholder="请输入楼宇名称"  required="required" />
+                                                <input type="hidden" id="buildingPoliceId" value="" name="poli_id">
+                                                <input type="hidden" id="buildingCommId" value="" name="commId">
+
+                                                <input id="callback" style="display:none" class="form-control" name="callback" value="parent.addbuilding11"/>
+                                            </p>
+                                            <p>
+                                                <label for="jingdu">位置坐标：</label>
+                                                <input type="text" name="builGpse" id="jingdu2"/>
+                                            </p>
+                                            <p>
+                                                <label for="weidu2">位置坐标：</label>
+                                                <input type="text" name="builGpsn" id="weidu2"/>
+                                            </p>
+                                    
+                                            <p>
+                                                <label for="userAddress">类型：</label>
+                                                <select id="xue">
+                                                   <option value="">请选择楼宇类型</option>
+                                                    <option value="01">住宅楼</option>
+                                                    <option value="02">写字楼</option>
+                                                    <option value="03">商厦</option>
+                                                    <option value="04">工厂</option>
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <label for="userSign2">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="userSign2"></textarea>
+                                            </p>
+                                                 <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                保存
+                                            </button>
+                                              <iframe name="addBuilding" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 楼宇信息修改 -->
+                            <div class="modal fade" id="myModal002edit" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel002" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel002">
+                                                楼宇信息修改
+                                                <span id="buildingEdit"></span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form action="../building/edit.do" target="builidingEdit" method="post">
+                                            <p>
+                                                <label for="louyuName1">楼宇名：</label>
+                                                <input type="text" id="louyuName1" name="builName" />
+                                                <input type="hidden" id="buildingPoliceId" value="" name="poli_id">
+                                                <input type="hidden" id="buidingCommunityId" value="" name="commId">
+                                                <input type="hidden" id="buildingIdhidden" value="" name="builId">
+                                                 <input id="callback" style="display:none" class="form-control" name="callback" value="parent.editbuilding11"/>
+                                            </p>
+                                            <p>
+                                                <label for="jingdu4">经度：</label>
+                                                <input type="text" name="builGpse" id="jingdu4" />
+                                            </p>
+                                            <p>
+                                                <label for="weidu4">纬度：</label>
+                                                <input type="text" name="builGpsn" id="weidu4" />
+                                            </p>
+                                            <p>
+                                                <label for="userAddress">类型：</label>
+                                                <select id="typeList">
+                                                    <option value="01">住宅楼</option>
+                                                    <option value="02">写字楼</option>
+                                                    <option value="03">商厦</option>
+                                                    <option value="04">工厂</option>
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <label for="userSign4">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="userSign4"></textarea>
+                                            </p>
+                                              <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                提交更改
+                                            </button>
+                                             <iframe name="builidingEdit" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 房间添加 -->
+                            <div class="modal fade" id="myModal003" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel003" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel003">
+                                                房间添加
+                                                <span id="addRoomMessage"></span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form action="../room/add.do" target="addRoom" method="post">
+                                            <p>
+                                                <label for="unitName">单元：</label>
+                                                <input type="text" id="unitName" name="roomUnit" placeholder="请输入所在单元"  required/>
+                                                <input type="hidden" id="roomBuildId" value="" name="builId">
+                                                  <input id="callback" style="display:none" class="form-control" name="callback" value="parent.addRoom1"/>
+                                            </p>
+                                            <p>
+                                                <label for="floorRoom">楼层：</label>
+                                                <input type="text" name="roomFloor" id="floorRoom" placeholder="请输入所在楼层" required="required" />
+                                            </p>
+                                            <p>
+                                                <label for="roomNo">房间号：</label>
+                                                <input type="text" name="roomNo" id="roomNo" placeholder="请输入房间编号" required="required" />
+                                            </p>
+                                            <p>
+                                                <label for="roomType">房间分类：</label>
+                                                <select id="roomType" name="roomClass">
+                                                    <option value="">请选择房间分类</option>
+                                                    <option value="01">住宅</option>
+                                                    <option value="02">特业</option>
+                                                    <option value="03">学校</option>
+                                                    <option value="04">商铺</option>
+                                                    <option value="05">其他</option>
+                                                    <option value="06">重点关注</option>
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <label for="roomTypeSub">房间子类：</label>
+                                                <select id="roomTypeSub" name="roomSubclass">
+                                                   <option value="">请选择房间子类...</option>
+                                                  <option value="0101">自住住宅</option>
+          <option value="0102">出租住宅</option>
+          <option value="0201">旅馆</option>
+          <option value="0202">废旧金属回收</option>
+          <option value="0203">刻字刻章</option>
+          <option value="0204">典当</option>
+          <option value="0205">网吧</option>
+          <option value="0206">寄递</option>
+          <option value="0301">幼儿园</option>
+          <option value="0302">中小学</option>
+          <option value="0303">学生宿舍</option>
+          <option value="0401">足浴</option>
+          <option value="0402">棋牌</option>
+          <option value="0403">KTV</option>
+          <option value="0405">餐饮</option>
+          <option value="0406">药店（医院）</option>
+          <option value="0407">水果店</option>
+          <option value="0408">超市</option>
+          <option value="0409">通讯器材</option>
+          <option value="0410">理发店</option>
+          <option value="0411">福利彩票</option>
+          <option value="0412">图文店</option>
+          <option value="0413">浴场</option>
+          <option value="0414">加油站</option>
+          <option value="0415">五金店</option>
+          <option value="0501">农贸市场</option>
+          <option value="0502">基督教堂</option>
+          <option value="0503">其他</option>
+                                             </select>
+                                            </p>
+                                              <p>
+                                              <label for="roomFoces">是否重点关注：</label>
+                                                <select id="roomFocus" name="isFocus">
+                                                  <option value="">是否重点关注...</option>
+                                                  <option value="1">是</option>
+                                                  <option value="0">否</option>
+                                               </select>
+                                            </p>
+                                            <p>
+                                                <label for="userSign">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="roomRemark"></textarea>
+                                            </p>
+                                              <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                提交更改
+                                            </button>
+                                             <iframe name="addRoom" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    <div class="left col-lg-2 col-md-2 col-xs-2 col-sm-2">
+        <ul class="nav nav-pills nav-stacked ac-container">
+            <!--<li role="presentation">
+                <label class="grid grid0"><i class="icomoon" aria-hidden="true">&#xe900;</i> 首页</label>
+            </li>
+            <li role="presentation">
+                <label class="grid grid00"><i class="icomoon" aria-hidden="true">&#xe912;</i> <a class="check-log-btn" href="check_log.html" target="_blank">巡检日志</a></label>
+            </li>-->
+            <!-- 人员查询 -->
+            <!--<li role="presentation">
+                <label class="grid grid00"><i class="icomoon" aria-hidden="true">&#xe972;</i> <a class="check-log-btn" href="search_person.html" target="_blank">人员查询</a></label>
+            </li>-->
+            <li role="presentation">
+                <input id="ac-1" name="accordion-1" type="checkbox" />
+                <label for="ac-1" class="grid grid1" id='menu-comm'><i class="icomoon" aria-hidden="true">&#xe901;</i> 辖区建筑</label>             
+                <div class=right-top-m>
+                <ul id="pull-right" class="pull-right">
+           <!--          <li>
+                        <label class=""><a class="check-log-btn" href="#" data-toggle="modal"
+        data-target="#myModal001"><i class="icomoon" aria-hidden="true">&#xe90c;</i></a></label>
+                    </li>
+                    <li>
+                        <label class=""><a class="check-log-btn" href="#" data-toggle="modal"
+        data-target="#myModal002"><i class="icomoon" aria-hidden="true">&#xe906;</i></a></label>
+                    </li>
+                    <li>
+                        <label class=""><a class="check-log-btn" href="#"><i class="icomoon" aria-hidden="true" onclick="rec()">&#xe90e;</i></a></label>
+                    </li> -->
+                </ul>
+            </div>
+                <article class="ac-small ac-small-1">
+                    <!--辖区建筑多级菜单-->
+                    <div class="tree" id="tree"></div>
+                </article>
+            </li>
+
+            <li role="presentation">
+                <input id="ac-2" name="accordion-1" type="checkbox" />
+                <label for="ac-2" class="grid grid2" id="menu-static"><i class="icomoon" aria-hidden="true">&#xe90a;</i> 数据统计</label>
+                <article class="ac-small ac-small-2">
+                    <div id="info" class="info">
+                    <!-- 统计信息 -->
+                        <ul class="info-t-box" id="info-t-box"></ul>
+                        
+                        <div class="charts-box">
+                            <div class="charts" id="chart1"></div>
+                        </div>
+
+                        <div class="charts-box">
+                            <div class="charts" id="chart2"></div>
+                        </div>
+                        <div class="charts-box">
+                            <div class="charts" id="chart3"></div>
+                        </div>
+                        
+                    </div>
+                    <div style="width: 100%;height:63px;">
+                        <p class="loading">
+                            <img src="images/ajax-loader.gif">
+                        加载中……</p>
+                    </div>
+                </article>
+                
+            </li>
+        </ul>
+    </div>
+    <!--left--> 
+    <div class="right col-lg-10 col-md-10 col-xs-10 col-sm-10">
+        <div class="right-top">
+            <div id="breadcrumb" class="bread col-lg-5 col-md-5 col-xs-5 col-sm-5">
+                <ol class="breadcrumb" id="breadcrumb1"></ol>
+            </div>       
+            <div class="right-top-t  col-lg-7 col-md-7 col-xs-7 col-sm-7" id="bs-example-navbar-collapse-1">
+                <!-- <ul class="nav  pull-right navbar-nav">
+                    <li class="l1 zhuzhai">
+                        <div class="btn-group"><input id="zhuzhai-all" type="checkbox" name="roomclass" value="01">
+                            <select id="bread-zhuzhai" multiple="multiple">
+                                <option name="zhuzhai" value="0101">自住住宅</option>
+                                <option name="zhuzhai" value="0102">出租住宅</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="l1 teye">
+                        <div class="btn-group"><input id="teye-all" type="checkbox" name="roomclass" value="02">
+                            <select id="bread-teye" multiple="multiple">
+                                <option value="0201">旅馆</option>
+                                <option value="0202">网吧</option>
+                                <option value="0203">废旧金属回收</option>
+                                <option value="0204">刻字刻章</option>
+                                <option value="0205">典当</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="l1 school">
+                        <div class="btn-group"><input id="school-all" type="checkbox" name="roomclass" value="03">
+                            <select id="bread-school" multiple="multiple">
+                                <option value="0301">幼儿园</option>
+                                <option value="0302">中小学</option>
+                                <option value="0303">学生宿舍</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="l1 place">
+                        <div class="btn-group"><input id="place-all" type="checkbox" name="roomclass" value="04">
+                            <select id="bread-place" multiple="multiple">
+                                <option value="0401">足浴</option>
+                                <option value="0402">棋牌</option>
+                                <option value="0403">KTV</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="l1 other">
+                        <div class="btn-group"><input id="others-all" type="checkbox" name="roomclass" value="05">
+                            <select id="bread-others" multiple="multiple">
+                                <option value="0501">农贸市场</option>
+                                <option value="0502">基督教堂</option>
+                                <option value="0503">其他</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li class="l1 import">
+                        <div class="btn-group"><input id="import-all" type="checkbox" name="roomclass" value="06">
+                            <select id="bread-import" multiple="multiple">
+                                <option value="0601">一级</option>
+                                <option value="0602">二级</option>
+                                <option value="0603">三级</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li value="1" class="l1 outdate" style="padding-right: 5px">
+                        <button class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="getOverDueBuild()" style="margin-left: 5px;">超期未巡检</button>
+                    </li>
+                </ul> -->
+                 <ul class="nav  pull-right navbar-nav">
+                    <li class="l1 zhuzhai">
+                        <input id="zhuzhai-all" type="checkbox" name="roomclass" value="01">住宅
+                    </li>
+                    <li class="l1 teye">
+                        <input id="teye-all" type="checkbox" name="roomclass" value="02">特业
+                    </li>
+                    <li class="l1 school">
+                        <input id="school-all" type="checkbox" name="roomclass" value="03">学校
+                    </li>
+                    <li class="l1 place">
+                        <input id="place-all" type="checkbox" name="roomclass" value="04">商铺
+                    </li>
+                    <li class="l1 other">
+                        <input id="others-all" type="checkbox" name="roomclass" value="05">其他
+                    </li>
+                    <li class="l1 import">
+                        <input id="import-all" type="checkbox" name="roomclass" value="06">重点关注
+                    </li>
+                    <li value="1" class="l1 outdate" style="padding-right: 5px">
+                        <button class="btn btn-xs btn-danger" href="javascript:void(0)" onclick="getOverDueBuild()" style="margin-left: 5px;">超期未巡检</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+<!--right-top-->
+        <div class="right-main">
+            <!--<div class="hide-btn" id="hide-btn">显示列表</div>-->
+            <div class="hide-btn2" id="hide-btn2">显</div>
+            <!--<div class="charts-list" id="charts-list">统计列表</div>-->
+            <div class="map col-lg-12 col-md-12 col-xs-12 col-sm-12" id="map">
+                
+            </div>
+
+            <div class="tab col-lg-4 col-md-4 col-xs-4 col-sm-4" id="tab">
+            <!-- 单元数 -->
+                <ul id="myTab" class="tab-my nav nav-tabs"></ul>
+                <!-- 楼层数及楼层切换 -->
+                <div class="floor">
+                    <nav>
+                        <ul id="floor-change" class="pager"></ul>
+                    </nav>
+                </div>
+                <!-- 切换单元 根据单元和楼层显示房间等信息 -->
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="dy1">
+                        <div class="people-addr">
+                            <div id="roombox" class="people-addr-h"></div>
+
+                            <div id="house-info" class="house-info">
+                                <li class="house-info-header">
+                                <!-- 巡检成功添加提示 -->
+                                    房间巡检信息:     <span id="autoInspectionMessage"></span>
+                                    <!-- 手动巡检添加id -->
+                                    <a id="manualInspection" data-toggle="modal" data-target="#myModal" class="pull-right btn btn-xs btn-info">手动巡检</a>
+                                    <!--      自动巡检添加id -->
+                                    <a id="autoInspection" class="pull-right btn btn-xs btn-success" data-toggle="modal" data-target="#auto-check">自动巡检</a>
+                                    <!-- 房间删除 -->
+                                   <!--  <a id="" class="pull-right btn btn-xs btn-success" data-toggle="modal" data-target="#myModal004" onclick="rec()">删除房间</a> -->
+                                    <!-- 房间信息修改 -->
+                                    <a id="roomEditInformation" class="pull-right btn btn-xs btn-success" data-toggle="modal" data-target="#myModal003edit">修改房间信息</a>
+                                </li>
+                                <ul class="col-lg-2 col-md-2 col-xs-2 col-sm-2">
+                                    <li><img src="images/building.png" alt=""></li>
+                                </ul>
+                                <ul id="house-info-details" class="col-lg-10 col-md-10 col-xs-10 col-sm-10">
+                                    <li id="house-info-c-b">龙湖滟澜山 5幢</li>
+                                    <li id="remark"></li>
+                                    <li>单元：<span id="house-info-u">1</span>单元</li>
+                                    <li>楼层：<span id="house-info-f">2</span>层</li>
+                                    <li>房间编号：<span id="house-info-n">1502</span></li>
+                                    <li>房间分类：<span id="house-info-cl">住宅</span>-<span id="house-info-scl">出租住宅</span></li>
+                                    <li>巡检次数累计：<span id="due-num">4次</span></li>
+                                    <li>上次巡检时间：<span id="due-time">2016年5月20日</span></li>
+                                    <li>上次巡检记录：<span id="due-last"></span></li>
+                                    <li>是否为重点关注对象：<span id="house-focus">是</span></li>
+                                </ul>
+
+                            </div>
+                            <!-- 房间信息修改 -->
+                            <div class="modal fade" id="myModal003edit" tabindex="-1" role="dialog"
+                                aria-labelledby="myModalLabel003" aria-hidden="true">
+                                 <div class="modal-dialog">
+                                     <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                data-dismiss="modal" aria-hidden="true">
+                                                    &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel003">
+                                                房间信息修改
+                                                <span id="roomEditMessage"></span>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body"> 
+                                        <div class="add-room">
+                                        <form action="../room/edit.do" target="roomEdit" method="post">
+                                            <p>
+                                                <label for="roomEditunitName">单元：</label>
+                                                <input type="text" id="roomEditunitName" name="roomUnit"  />
+                                                <input type="hidden" value="" id="roomEditId" name="roomId">
+                                                <input type="hidden" value="" id="roomBuildId11" name="builId">
+                                                 <input id="callback" style="display:none" class="form-control" name="callback" value="parent.editRoom1"/>
+                                            </p>
+                                            <p>
+                                                <label for="roomEditFloor">楼层：</label>
+                                                <input type="text" name="roomFloor" id="roomEditFloor"/>
+                                            </p>
+                                            <p>
+                                                <label for="roomEditNo">房间号：</label>
+                                                <input type="text" name="roomNo" id="roomEditNo"  />
+                                            </p>
+                                             <p>
+                                                <label for="roomEditType">房间分类：</label>
+                                                <select id="roomEditType" name="roomClass">
+                                                    <option value="">请选择房间分类</option>
+                                                    <option value="01">住宅</option>
+                                                    <option value="02">特业</option>
+                                                    <option value="03">学校</option>
+                                                    <option value="04">商铺</option>
+                                                    <option value="05">其他</option>
+                                                    <option value="06">重点关注</option>
+                                                </select>
+                                            </p>
+                                            <p>
+                                                <label for="roomEditTypeSub">房间子类：</label>
+                                                <select id="roomEditTypeSub" name="roomSubclass">
+                                                   <option value="">请选择房间子类...</option>
+                                                   <option value="0101">自住住宅</option>
+                                                   <option value="0102">出租住宅</option>
+                                                   <option value="0201">旅馆</option>
+                                                   <option value="0202">废旧金属回收</option>
+                                                   <option value="0203">刻字刻章</option>
+                                                   <option value="0204">典当</option>
+                                                   <option value="0301">幼儿园</option>
+                                                   <option value="0302">中小学</option>
+                                                   <option value="0303">学生宿舍</option>
+                                                   <option value="0401">足浴</option>
+                                                   <option value="0402">棋牌</option>
+                                                   <option value="0403">KTV</option>
+                                                   <option value="0404">网吧</option>
+                                                   <option value="0405">餐饮</option>
+                                                   <option value="0406">药店（医院）</option>
+                                                   <option value="0407">水果店</option>
+                                                   <option value="0408">超市</option>
+                                                   <option value="0409">通讯器材</option>
+                                                   <option value="0410">理发店</option>
+                                                   <option value="0411">福利彩票</option>
+                                                   <option value="0412">寄递</option>
+                                                   <option value="0413">摄影</option>
+                                                   <option value="0414">洗衣店</option>
+                                                   <option value="0415">修车店</option>
+                                                   <option value="0501">农贸市场</option>
+                                                   <option value="0502">基督教堂</option>
+                                                   <option value="0503">其他</option>
+                                                   <option value="0601">一级</option>
+                                                   <option value="0602">二级</option>
+                                                   <option value="0603">三级</option>
+                                             </select>
+                                            </p>
+                                              <p>
+                                              <label for="roomEditFoces">是否重点关注：</label>
+                                                <select id="roomEditFocus" name="isFocus">
+                                                  <option value="">是否重点关注...</option>
+                                                  <option value="1">是</option>
+                                                  <option value="0">否</option>
+                                               </select>
+                                            </p>
+                                            <p>
+                                                <label for="roomEditRemark">备注：</label>
+                                                <textarea cols="40" rows="4" name="ramark" id="roomEditRemark"></textarea>
+                                            </p>
+                                             <button type="button" class="btn btn-default"
+                                                data-dismiss="modal">关闭
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">
+                                                提交更改
+                                            </button>
+                                               <iframe name="roomEdit" style="display: none;"></iframe>
+                                        </form>
+                                        </div>
+                                        </div>
+                                        <div class="modal-footer" style="border:none">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 自动巡检加载框 -->
+                            <div class="modal fade" id="auto-check" tabindex="-1" role="dialog" aria-labelledby="autocheck" aria-hidden="true">
+                               <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" 
+                                               data-dismiss="modal" aria-hidden="true">
+                                                  &times;
+                                            </button>
+                                            <h4 class="modal-title" id="autocheck">
+                                               正在执行自动巡检
+        
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p id="autocheck-i"></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"
+                                               data-dismiss="modal">关闭
+                                            </button>
+                                            
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                               </div><!-- /.modal -->
+                            </div>
+                             <!-- 空房间数导出提示框 -->
+                             <div class="modal fade" id="focusNum" tabindex="-1" role="dialog" aria-labelledby="autocheck" aria-hidden="true">
+                               <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" 
+                                               data-dismiss="modal" aria-hidden="true">
+                                                  &times;
+                                            </button>
+                                            <h4 class="modal-title" >
+                                               重点行业选择框
+                                               <p id="focusH4">
+                                                   
+                                               </p>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                             <ul id="focusUl">
+                                                
+                                            </ul>
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"
+                                               data-dismiss="modal">关闭
+                                            </button>
+                                            <div >
+                                                
+                                            </div>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                               </div><!-- /.modal -->
+                            </div>
+                            <!-- 房间上一次巡检记录 -->
+                            <div class="modal fade" id="check-info" tabindex="-1" role="dialog" aria-labelledby="lastinfo" aria-hidden="true">
+                               <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" 
+                                               data-dismiss="modal" aria-hidden="true">
+                                                  &times;
+                                            </button>
+                                            <h4 class="modal-title" id="lastinfo">
+                                               上一次巡检记录
+                                            </h4>
+                                        </div>
+                                         <div class="modal-body">
+                                             <p id="check-i"></p>
+                                         </div>
+                                         <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"
+                                               data-dismiss="modal">关闭
+                                            </button>
+                                         </div>
+                                    </div><!-- /.modal-content -->
+                               </div><!-- /.modal -->
+                            </div>
+                            <!--巡检信息-->
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 style="font-size: 16px;" class="modal-title" id="myModalLabel">
+                                                <img src="images/compu.png" style="width: 50px;height:50px;">输入巡检信息: <span id="inspectionMessage"></span>
+                                                <p id="inputInspectionMessage"></p>
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="" accept-charset="utf-8">
+                                                <span>巡检时间：</span><input id="inspectId" type="datetime" name="" value=""  />
+                                                <input type="hidden" id="policeId" value=""/>
+                                                <input type="hidden" id="roomId" value=""/>
+                                                <span style="margin-left: 20px;">房间分类：</span>
+                                                <div class="dropdown house-1">
+                                            
+                                                    <!-- <select id="houseKind" placeholder="房间分类">
+                                                        <option id="house" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="01">住宅</option>
+                                                        <option value="0101">自住住宅</option>
+                                                        <option value="0102">出租住宅</option>
+                                                       
+                                                        <option id="word" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="02">特业</option>
+                                                        <option value="0201">旅馆</option>
+                                                        <option value="0202">网吧</option>
+                                                        <option value="0203">废旧金属回收</option>
+                                                        <option value="0204">刻字刻章</option>
+                                                        <option value="0205">典当</option>
+
+                                                        <option id="school" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="03">学校</option>
+                                                        <option value="0301">幼儿园</option>
+                                                        <option value="0302">中小学</option>
+                                                        <option value="0303">学生宿舍</option>
+
+                                                        <option id="station" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="04">商铺</option>
+                                                        <option value="0401">足浴</option>
+                                                        <option value="0402">棋牌</option>
+                                                        <option value="0403">KTV</option>
+
+                                                        <option id="other" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="05">其他</option>
+                                                        <option value="0501">农贸市场</option>
+                                                        <option value="0502">基督教堂</option>
+                                                        <option value="0503">其他</option>
+
+                                                        <option id="focus" style="font-size:16px; margin-bottom:2px;font-weight:bold" disabled value="06">重点关注</option>
+                                                        <option value="0601">一级</option>
+                                                        <option value="0602">二级</option>
+                                                        <option value="0603">三级</option>
+                                                    </select> -->
+
+                                                    <select id="houseKind" placeholder="房间分类">
+                                                        <option id="house" value="01">住宅</option>
+                                                        <option id="word" value="02">特业</option>
+                                                        <option id="school" value="03">学校</option>
+                                                        <option id="station" value="04">商铺</option>
+                                                        <option id="other" value="05">其他</option>
+                                                        <option id="focus" value="06">重点关注</option>
+                                                    </select>
+                                                   
+                                                </div>
+                                                <br>
+                                                <span style="display:inline-block;margin-top: 10px;">巡检记录：</span>
+                                                <br>
+                                                <textarea id="textarea1" type="text" name="" style="width: 100%;height: 200px;margin-bottom: 5px;"></textarea>
+                                                <span class="pull-left">标记为重点关注对象：<lable class="radion-inline"><input type="radio" name="isfocus" value="1">是
+                                                </lable>
+                                                <lable class="radion-inline"><input type="radio" name="isfocus" value="0">否
+                                                </lable>
+                                                </span>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default btn-xs"
+                                                    data-dismiss="modal">取消
+                                            </button>
+                                            <!-- 添加巡检记录事件 -->
+                                            <button type="button" onclick="addInspectionLog()" class="btn btn-primary btn-xs">
+                                                提交
+                                            </button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                            
+                            <!-- 添加人员信息 -->
+                            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog2">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel2" >
+                                                <img src="images/compu.png" style="width: 50px;height: 50px;">为<span id="roomId11"></span>房间添加人员信息
+                                                <span id="message"></span>
+                                                
+                                            </h4>
+                                        </div> 
+                                        <div class="modal-body modal-body2">
+                                            <form id="form-add" enctype='multipart/form-data' action="../person/add.do" target="test" method="post">
+                                            <input id="hidden" type="hidden" value="" name="roomId">
+                                                <div class="form-group">
+                                                    <label for="name">姓名:</label>
+                                                    <input type="text" required="required" class="form-control" name="persName" id="name">
+                                                    <input id="callback" style="display:none" class="form-control" name="callback" value="parent.addPerson"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>性别:</label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="persSex" id="inlineRadio1" value="1" checked="true"> 男
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="persSex" id="inlineRadio2" value="0"> 女
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="tel">电话:</label>
+                                                    <input type="number" required="required" class="form-control" name="persPhone" id="tel">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="id-num">身份证号码:</label>
+                                                    <input type="text" required="required" class="form-control" name="persIdcard" id="id-num">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="log-t">登记时间:</label>
+                                                    <input type="datetime" class="form-control" name="timeRegister" id="log-t">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="log-t">人员照片:</label>
+                                                    <input type="file" accept="image/*" class="form-control" name="persPhoto" id="photo">
+                                                </div>
+                                               <div class="form-group" style="width: 60%">
+                                                    <label  style="width:80px;">登记原因:</label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="whyRegister" id="inlineRadio3" value="01" checked="true"> 自住
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="whyRegister" id="inlineRadio4" value="02"> 租住
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="whyRegister" id="inlineRadio5" value="03"> 工作
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="huji">户籍所在地:</label>
+                                                    <input type="text" class="form-control" name="addrCensus" id="huji">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="juzhu">居住地:</label>
+                                                    <input type="text" class="form-control" name="addrLive" id="juzhu">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="work">工作地:</label>
+                                                    <input type="text" class="form-control" name="addrWork" id="work">
+                                                </div>
+                                                <br>
+                                                <div class="form-group">
+                                                    <label  style="width:150px;">是否为重点关注对象:</label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="isFocus" id="inlineRadio6" value="1"> 是
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="isFocus" id="inlineRadio7" value="0" checked="true"> 否
+                                                    </label>
+                                                </div>
+                                                <br>
+                                                <span style="margin-left: 10px;">备注:</span><br>
+                                                <textarea id="copy" type="text" name="ramark" style="width: 97%;height: 100px;margin-left: 10px;"></textarea>
+                                                
+                                                <button id="btn-add" style="width: 70px;float: right;margin: 10px;" type="submit" class="btn btn-primary btn-xs">
+                                                    提交
+                                                </button>
+                                                <button style="width: 70px;float: right;margin: 10px;" type="button" class="btn btn-default btn-xs"
+                                                    data-dismiss="modal">取消
+                                                </button>
+                                                <iframe name="test" style="display: none;"></iframe>
+                                                
+                                             </form>
+                                        </div>
+                                        <div class="modal-footer" style="border: none;"></div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+
+                            </div>
+                        </div>
+                        <!--添加人员-->
+                            <!--people-addr-h-->
+                        <div class="people-info">
+                            <li class="people-info-header">
+                                人员信息:                  
+                                <!-- 点击添加人员根据showTime()动态获取当前时间 -->
+                                <a id="peopleAdd" data-toggle="modal" data-target="#myModal2" class="pull-right btn btn-xs btn-success">添加人员</a>
+                            </li>
+                           <!-- 人员详细信息展示 -->
+                            <div id="people-info" class="people-info-body">
+                             
+                            </div>
+                            <div style="width: 100%;height:63px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--right-->
+</div>
+<!--main-->
+</div>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jQuery.rTabs.js"></script>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=z3rHgI6QkD0GKIP2xjnqKM18"  ></script>
+<script src="js/AreaRestriction_min.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/bootstrap-multiselect.js"></script>
+<script src="js/main.js"></script>
+<script src="js/myAjax.js"></script>
+<script src="js/police.js"></script>
+<script src="js/peopleInformation.js"></script>
+<script src="js/mapFunc.js"></script>
+<script src="js/addEditRemove.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var datas = JSON.parse(storage.getItem('police-info'));
+        console.log(datas);
+        var poli_id_my = datas.police.poliId;
+        var stat_id = datas.police.statId;
+        var role = datas.police.poliRole;
+        var stat_name = datas.police.statName;
+        var remark = datas.police.ramark;
+        var poliDistrict = datas.police.poliDistrict;
+        console.log(poliDistrict);
+
+        if(role==01){
+            console.log(remark);
+            getStatisByPoli(poli_id_my,remark);
+            createtree10(poli_id_my,remark,poliDistrict);
+            createJurisdection(poliDistrict);
+        }
+        else if(role==10){
+            getStatisByStat(stat_id);
+            createtree20(stat_name,stat_id);
+        }
+
+        admin();
+		mult('#bread-zhuzhai','#zhuzhai-all','住宅');
+        mult('#bread-teye','#teye-all','特业');
+        mult('#bread-school','#school-all','学校');
+        mult('#bread-place','#place-all','商铺');
+        mult('#bread-others','#others-all','其他');
+        mult('#bread-import','#import-all','重点关注');
+        //巡检快到期提醒
+        $.ajax({
+        url:'../police/inspectlog/overdue',
+        type:'POST',
+        data:{
+            poli_id:poli_id_my,
+        },
+        success:function(data){
+        console.log(data);
+        var datas = eval('('+data+')');
+        var p = "";
+        if(datas.overdue_num.comm_overinspect > 0){
+            p += "有超期未巡检小区 ";
+        }
+        if(datas.overdue_num.buil_overinspect> 0){
+            p += "有超期未巡检建筑 ";
+        }
+        if(datas.overdue_num.room_overinspect > 0){
+            p += "有超期未巡检房间 ";
+        }
+        if(datas.quick_overdue_num.comm_overinspect > 0){
+            p += "有小区即将超期未巡检 ";
+        }
+        if(datas.quick_overdue_num.buil_overinspect > 0){
+            p += "有建筑即将超期未巡检 ";
+        }
+        if(datas.quick_overdue_num.room_overinspect > 0){
+            p += "有房间即将超期未巡检 ";
+        }
+        if(p != ""){
+           var message =  confirm(p + '请点击下方确定按钮查看详情' );
+           if(message == true){
+            window.open("./check.html");
+           }
+        }
+        
+        },
+        error:function(err){
+            alert('发生了错误：'+err.status);
+            console.log(err);
+        }
+    });
+            
+    });
+    //人员添加成功后的回调函数
+function addPerson(resultCode) {
+    if (1 == resultCode) {
+        var message = $("#message");
+        message.html("");
+        var roomId = $('#hidden').val();
+        message.text("添加人员成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal2').modal('hide');
+            getPersonInfo(roomId);
+        },2000);
+    }
+}
+
+function rec(){
+    var message=confirm("是否确认删除？");
+    if(message==true){
+        
+    }
+    else{
+        
+    }
+}
+//小区添加成功后的回调函数
+function addCommunity(resultCode){
+     if (1 == resultCode) {
+        var message = $("#communityMessage");
+        message.html("");
+        var policeId = $('#policeIdhidden').val();
+        message.text("添加小区成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal001').modal('hide');
+            console.log(policeId);
+            treeLevel10(policeId);
+            console.log("hello");
+        },2000);
+    }
+}
+//小区修改成功后的回调函数
+function editCommunity(resultCode){
+   if (1 == resultCode) {
+        var policeId = $('#hiddenPoliceId1').val();
+        var message = $("#communityEdithello");
+        message.html("");
+        message.text("修改小区信息成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal001edit').modal('hide');
+            treeLevel10(policeId);
+        },2000);
+    }
+}
+//楼宇添加成功后的回调函数
+function addbuilding11(resultCode){
+ if (1 == resultCode) {
+        var commId = $('#buildingCommId').val();
+        var commName = $('#communityNamehidden').val();
+        var message = $("#buildingMessage");
+        message.html("");
+        message.text("添加楼宇信息成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal002').modal('hide');
+            treeLevel21(commId,commName);
+        },2000);
+    }
+}
+//楼宇修改成功后的回调函数
+function editbuilding11(resultCode){
+    if (1 == resultCode) {
+        var policeId = $('#buildingPoliceId').val();
+        var message = $("#buildingEdit");
+        message.html("");
+        message.text("修改楼宇信息成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal002edit').modal('hide');
+            treeLevel10(policeId);
+        },2000);
+    }
+
+}
+//增加房间成功后的回调函数
+function addRoom1(resultCode){
+   if (1 == resultCode) {
+        var builId = $('#roomBuildId').val();
+        var message = $("#addRoomMessage");
+        message.html("");
+        message.text("增加房间信息成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal003').modal('hide');
+            getUnit(builId);
+        },2000);
+    } 
+}
+//修改房间成功后的回调函数
+function editRoom1(resultCode){
+       if (1 == resultCode) {
+        var builId = $('#roomBuildId11').val;
+        var message = $("#roomEditMessage");
+        message.html("");
+        message.text("房间信息修改成功！(2s后窗口自动关闭)");
+        setTimeout(function(){
+            $('#myModal003edit').modal('hide');
+            getUnit(builId);
+        },2000);
+    } 
+}
+</script>
+</body>
+</html>

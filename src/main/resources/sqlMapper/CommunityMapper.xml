@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.lab.checkIn.mapper.CommunityMapper">
+	<resultMap id="BaseResultMap" type="edu.hdu.lab.checkIn.model.Community">
+		<id column="COMM_ID" property="commId" jdbcType="INTEGER" />
+		<result column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+		<result column="COMM_NAME" property="commName" jdbcType="VARCHAR" />
+		<result column="COMM_GPSLIST" property="commGpslist" jdbcType="VARCHAR" />
+		<result column="IS_DELETED" property="isDeleted" jdbcType="BIT" />
+		<result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		COMM_ID, POLI_ID, COMM_NAME, COMM_GPSLIST, IS_DELETED, RAMARK
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="edu.hdu.lab.checkIn.model.CommunityExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from community
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from community
+		where COMM_ID = #{commId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from community
+		where COMM_ID = #{commId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="edu.hdu.lab.checkIn.model.CommunityExample">
+		delete from community
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="edu.hdu.lab.checkIn.model.Community">
+		insert into community (COMM_ID, POLI_ID, COMM_NAME,
+		COMM_GPSLIST, IS_DELETED, RAMARK
+		)
+		values (#{commId,jdbcType=INTEGER}, #{poliId,jdbcType=INTEGER},
+		#{commName,jdbcType=VARCHAR},
+		#{commGpslist,jdbcType=VARCHAR}, #{isDeleted,jdbcType=BIT}, #{ramark,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="edu.hdu.lab.checkIn.model.Community">
+		insert into community
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="commId != null">
+				COMM_ID,
+			</if>
+			<if test="poliId != null">
+				POLI_ID,
+			</if>
+			<if test="commName != null">
+				COMM_NAME,
+			</if>
+			<if test="commGpslist != null">
+				COMM_GPSLIST,
+			</if>
+			<if test="isDeleted != null">
+				IS_DELETED,
+			</if>
+			<if test="ramark != null">
+				RAMARK,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="commId != null">
+				#{commId,jdbcType=INTEGER},
+			</if>
+			<if test="poliId != null">
+				#{poliId,jdbcType=INTEGER},
+			</if>
+			<if test="commName != null">
+				#{commName,jdbcType=VARCHAR},
+			</if>
+			<if test="commGpslist != null">
+				#{commGpslist,jdbcType=VARCHAR},
+			</if>
+			<if test="isDeleted != null">
+				#{isDeleted,jdbcType=BIT},
+			</if>
+			<if test="ramark != null">
+				#{ramark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 根据警察ID来查询社区数量 -->
+	<select id="countByExample" parameterType="edu.hdu.lab.checkIn.model.CommunityExample"
+		resultType="java.lang.Integer">
+		select count(*) from community
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update community
+		<set>
+			<if test="record.commId != null">
+				COMM_ID = #{record.commId,jdbcType=INTEGER},
+			</if>
+			<if test="record.poliId != null">
+				POLI_ID = #{record.poliId,jdbcType=INTEGER},
+			</if>
+			<if test="record.commName != null">
+				COMM_NAME = #{record.commName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.commGpslist != null">
+				COMM_GPSLIST = #{record.commGpslist,jdbcType=VARCHAR},
+			</if>
+			<if test="record.isDeleted != null">
+				IS_DELETED = #{record.isDeleted,jdbcType=BIT},
+			</if>
+			<if test="record.ramark != null">
+				RAMARK = #{record.ramark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update community
+		set COMM_ID = #{record.commId,jdbcType=INTEGER},
+		POLI_ID = #{record.poliId,jdbcType=INTEGER},
+		COMM_NAME = #{record.commName,jdbcType=VARCHAR},
+		COMM_GPSLIST = #{record.commGpslist,jdbcType=VARCHAR},
+		IS_DELETED = #{record.isDeleted,jdbcType=BIT},
+		RAMARK = #{record.ramark,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="edu.hdu.lab.checkIn.model.Community">
+		update community
+		<set>
+			<if test="poliId != null">
+				POLI_ID = #{poliId,jdbcType=INTEGER},
+			</if>
+			<if test="commName != null">
+				COMM_NAME = #{commName,jdbcType=VARCHAR},
+			</if>
+			<if test="commGpslist != null">
+				COMM_GPSLIST = #{commGpslist,jdbcType=VARCHAR},
+			</if>
+			<if test="isDeleted != null">
+				IS_DELETED = #{isDeleted,jdbcType=BIT},
+			</if>
+			<if test="ramark != null">
+				RAMARK = #{ramark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where COMM_ID = #{commId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.Community">
+		update community
+		set POLI_ID = #{poliId,jdbcType=INTEGER},
+		COMM_NAME = #{commName,jdbcType=VARCHAR},
+		COMM_GPSLIST = #{commGpslist,jdbcType=VARCHAR},
+		IS_DELETED = #{isDeleted,jdbcType=BIT},
+		RAMARK = #{ramark,jdbcType=VARCHAR}
+		where COMM_ID = #{commId,jdbcType=INTEGER}
+	</update>
+
+	<select id="getCommunitybyOverDate" parameterType="Integer"
+		resultMap="BaseResultMap">
+		select distinct c.* 
+		from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join community as
+		c on c.COMM_ID=b.COMM_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where
+		(c.POLI_ID=#{poliId,jdbcType=INTEGER} or
+		b.POLI_ID=#{poliId,jdbcType=INTEGER}) and
+		r.BUIL_ID=b.BUIL_ID 
+		and c.COMM_ID=b.COMM_ID and
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))>s.PARA_VALUE or
+		(to_days(now())-to_days(r.TIME_LASTINSPECT))>rs.PARA_VALUE)
+	</select>
+
+	<select id="getCommunitybyQuickOverDate" parameterType="Integer"
+		resultMap="BaseResultMap">
+		select distinct c.* 
+		from room as r left join building as b
+		 on r.BUIL_ID=b.BUIL_ID left join community as
+		c on c.COMM_ID=b.COMM_ID left join person as p on p.ROOM_ID=r.ROOM_ID left join sysparam
+		as s on s.PARA_ID=p.IS_FOCUS left join roomsysparam as rs on rs.PARA_ID=r.IS_FOCUS
+		where
+		(c.POLI_ID=#{poliId,jdbcType=INTEGER} or
+		b.POLI_ID=#{poliId,jdbcType=INTEGER}) and
+		r.BUIL_ID=b.BUIL_ID 
+		and c.COMM_ID=b.COMM_ID and
+		(((to_days(now())-to_days(r.TIME_LASTINSPECT))&lt;=s.PARA_VALUE 
+		and (to_days(now())-to_days(r.TIME_LASTINSPECT))>(s.PARA_VALUE-2))
+		or
+		((to_days(now())-to_days(r.TIME_LASTINSPECT))&lt;=rs.PARA_VALUE
+		and (to_days(now())-to_days(r.TIME_LASTINSPECT))>(rs.PARA_VALUE-2)))
+	</select>
+</mapper>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>信息统计</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/people_info.css">
+<style>
+a {
+    text-decoration: none;
+}
+ul, ol, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+.layout {
+    margin: 0 3%;
+    margin-top: 15px;
+    clear: both;
+    font-size: 12px;
+    text-align: center;
+}
+th{
+    text-align: center;
+}
+</style>
+</head>
+<body>
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="login.html" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="main">
+    <div class="layout">
+       <h3 id="informationSpecialTittle" style="display:none"></h3>
+       <div id="informationSpecialButton">
+       </div>
+        <table id="informationSpecialtable" class="table table-hover">
+            <caption id="informationSpecialCaption" class="caption" style="font-size: 20px;text-align:center;color:black;">
+            </caption>
+
+            <thead id="informationSpecialThead"></thead>
+            <tbody id="informationSpecialTbody"></tbody>
+            
+        </table>
+       
+    </div>
+</div>
+</body>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.table2excel.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/police.js"></script>
+<script src="js/specialInformation.js"></script>
+<script type="text/javascript">
+ admin();
+if(window.location.href.split("?")[1].split("&")[1].split("=")[0] == "policeId"){
+        var pliceId1 = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+        var roomclassify =  window.location.href.split("?")[1].split("&")[0].split("=")[1];
+        getSpecialInformation(pliceId1,"","",roomclassify);
+    }
+    if(window.location.href.split("?")[1].split("&")[1].split("=")[0] == "commId"){
+        var commId1 = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+        var roomclassify =  window.location.href.split("?")[1].split("&")[0].split("=")[1];
+        getSpecialInformation("",commId1,"",roomclassify);
+    }
+    if(window.location.href.split("?")[1].split("&")[1].split("=")[0] == "builId"){
+        var builId1 = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+        var roomclassify =  window.location.href.split("?")[1].split("&")[0].split("=")[1];
+        getSpecialInformation("","",builId1,roomclassify);
+    }
+   
+</script>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>巡检情况查询</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/people_info.css">
+    <style>
+      td,th{
+        width:80px;
+        display: inline-block;
+      }
+    </style>
+</head>
+<p>
+<nav class="navbar-my col-lg-12 col-md-12 col-xs-12 col-sm-12">
+    <img class="logo-img" src="images/logo.png" alt="logo">
+    <div class="navbar-header-my navbar-header ">
+        <span class="logo">派出所基础警务派单平台</span>
+    </div>
+
+    <div class="logout" >
+        <p class="navbar-icon navbar-text navbar-right text-right">
+            <a href="index.html" class="navbar-link"><span class="icomoon">&#xe900;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe905;</span></a>
+            <a href="#" class="navbar-link"><span class="icomoon">&#xe908;</span></a>
+            <a href="login.html" class="navbar-link"><span class="icomoon">&#xe90b;</span></a>
+        </p>
+        <div id="admin" class="admin pull-right"></div>
+    </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="main2">
+    <div class="col-lg-8 col-md-8 col-lg-offset-2 col-md-offset-2">
+        <div class="plot">
+            <div id="plot" class="plot-chart col-lg-5 col-md-5"></div>
+            <div id="plot-info" class="plot-info col-lg-7 col-md-7">
+            <p>超期未巡检小区列表</p>
+                <ul class="plot-check-log list-unstyled" id="comm-overdue">
+                    <!-- <li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span>小区名称</li> -->
+                </ul>
+                        <p>即将超期未巡检小区列表</p>
+                <ul class="plot-check-log list-unstyled" id="comm-overdue2">
+                </ul>
+
+            </div>
+        </div>
+        <div class="building">
+            <div id="building" class="building-chart col-lg-5 col-md-5"></div>
+            <div id="building-info" class="building-info col-lg-7 col-md-7">
+                <p>超期未巡检建筑列表</p>
+                <ul class="building-check-log list-unstyled" id="build-overdue">
+                    <!-- <li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span>楼宇名称</li> -->
+                </ul>
+                <p>即将超期未巡检建筑列表</p>
+                 <ul class="building-check-log list-unstyled" id="build-overdue2">
+                    
+                </ul>
+
+            </div>
+
+        </div>
+        <div class="house-c">
+            <div id="house-c" class="house-chart col-lg-5 col-md-5"></div>
+            <div class="house-c-info col-lg-7 col-md-7">
+                 <p id="overdue-room">超期未巡检房间列表</p>
+                <div id="overdueRoom-button">
+                </div>
+                <table id="room-overdue" class="table table-hover">
+                <thead id="room-thead"></thead>
+                <tbody id="room-tbody"></tbody>
+                </table>
+                <ul style="width:450px" class="pagination pagination11" id="holder1">
+               </ul>
+                 <p id="overdue-room2">即将超期未巡检房间列表</p>
+                <div id="overdueRoom-button2">
+                </div>
+                <table id="room-overdue2" class="table table-hover">
+                <thead id="room-thead2"></thead>
+                <tbody id="room-tbody2"></tbody>
+                </table>
+                 <ul style="width:450px" class="pagination pagination11" id="holder2">
+                </ul>
+        
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</p>
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.table2excel.min.js"></script>
+<script src="js/echarts.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/jqPaginator.min.js"></script>
+<script src="js/police.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var datas = JSON.parse(storage.getItem('police-info'));
+        var poli_id_my = datas.police.poliId;
+        admin();
+
+        getOverDueCom(poli_id_my);
+        getOverDuePerson(poli_id_my);
+
+        
+    });
+//根据policeid统计信息
+function getOverDueCom(poli_id_my){
+    $.ajax({
+        url: '../overInfo/OverDate',
+        type: 'POST',
+        data: {
+            poli_id: poli_id_my,
+        },
+        success:function(data){
+            // console.log(data);
+            var datas = eval('('+data+')');
+
+            commchart(datas);
+            buildchart(datas);
+            roomchart(datas);
+
+            commlist(datas);
+            buildlist(datas);
+            
+        },
+        error:function(err){
+        alert('发生了错误：'+err.status);
+        console.table(err);
+        }
+    });
+}
+//根据policeid统计超期人员和即将超期人员信息
+function getOverDuePerson(policeId){
+     $.ajax({
+        url: '../overInfo/OverDateInfo',
+        type: 'POST',
+        data: {
+            poli_id: policeId,
+        },
+        success:function(data){
+            // console.log(data);
+            var datas = eval('('+data+')');
+            console.log(datas.over_due_person.length);
+            if(datas.over_due_person.length > 0){
+            
+            var dataInfo = {};
+            dataInfo.poli_id = policeId;
+            var length = datas.over_due_person.length;
+            var count = Math.ceil(length/1000);
+            var holder = $("#holder1");
+             holder.html('');
+        $('#holder1').jqPaginator({
+        totalPages: count,
+        visiblePages: 3,
+        currentPage: 1,
+         first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+         prev: '<li class="prev"><a href="javascript:void(0);">上一页</a></li>',
+         next: '<li class="next"><a href="javascript:void(0);">下一页</a></li>',
+         last: '<li class="last"><a href="javascript:void(0);">最后一页</a></li>',
+         page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+         onPageChange: function (num) {
+           dataInfo.page = num;
+           dataInfo.size = 1000;
+           //console.log(datas);
+          roomlist11(dataInfo);
+    }
+});
+            
+}
+        if(datas.quick_over_due_person > 0){
+           var dataInfo1 = {};
+             dataInfo1.poli_id = policeId;
+            var length1 = datas.quick_over_due_person.length;
+            var count1 = Math.ceil(length/1000);
+            var holder1 = $("#holder2");
+             holder1.html('');
+        $('#holder2').jqPaginator({
+        totalPages: count1,
+        visiblePages: 3,
+        currentPage: 1,
+         first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+         prev: '<li class="prev"><a href="javascript:void(0);">上一页</a></li>',
+         next: '<li class="next"><a href="javascript:void(0);">下一页</a></li>',
+         last: '<li class="last"><a href="javascript:void(0);">最后一页</a></li>',
+         page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+         onPageChange: function (num) {
+           dataInfo1.page = num;
+           dataInfo1.size = 1000;
+           //console.log(datas);
+          roomlist21(dataInfo1);
+    }
+});
+        }
+            
+        },
+        error:function(err){
+        alert('发生了错误：'+err.status);
+        console.table(err);
+        }
+    });
+}
+
+function commchart(datas){
+    var chart_data = [];
+    
+    chart_data.push({value:datas.over_due_community_number, name:'未巡检小区'});
+    chart_data.push({value:datas.community_number-datas.over_due_community_number, name:'已巡检小区'});
+    chart_data.push({value:datas.quick_over_due_community.length,name:'即将超期未巡检小区'});
+        
+    creatCharts('plot',chart_data,'小区巡检情况:');
+}
+
+function buildchart(datas){
+    var chart_data = [];
+    
+    chart_data.push({value:datas.over_due_building_number, name:'未巡检建筑'});
+    chart_data.push({value:datas.building_number-datas.over_due_building_number, name:'已巡检建筑'});
+    chart_data.push({value:datas.quick_over_due_building.length,name:'即将超期未巡检建筑'});
+
+    creatCharts('building',chart_data,'建筑巡检情况:');
+}
+
+function roomchart(datas){
+    var chart_data = [];
+    
+    chart_data.push({value:datas.over_due_room_num, name:'未巡检房间'});
+    chart_data.push({value:datas.room_num-datas.over_due_room_num, name:'已巡检房间'});
+    chart_data.push({value:datas.quick_over_due_room.length,name:'即将超期未巡检房间'});
+
+    creatCharts('house-c',chart_data,'房间巡检情况:');
+}
+
+function commlist(datas){
+    var commbox = $('#comm-overdue');
+    commbox.html('');
+    var p = '';
+    for (var i = 0; i < datas.over_due_community.length; i++) {
+
+        getCommName(datas.over_due_community[i].commId,i);
+
+        p += '<li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span><span id="commName-overdue'+i+'"></span></li>'
+    }
+
+    commbox.prepend(p);
+    var commbox1 = $('#comm-overdue2');
+       commbox1.html('');
+    var p1 = '';
+    for (var i = 0; i < datas.quick_over_due_community.length; i++) {
+
+        getCommName2(datas.quick_over_due_community[i].commId,i);
+
+        p1 += '<li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span><span id="commName-overdue2'+i+'"></span></li>'
+    }
+
+    commbox1.prepend(p1);
+}
+function buildlist(datas){
+    var buildbox = $('#build-overdue');
+    buildbox.html('');
+    var p = '';
+    for (var i = 0; i < datas.over_due_building.length; i++) {
+
+        getCommName(datas.over_due_building[i].commId,-i-1);
+        getBuildName(datas.over_due_building[i].builId,i);
+
+        p += '<li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span><span id="commName-overdue'+(-i-1)+'"></span>&nbsp;&nbsp;'+datas.over_due_building[i].builName+'</li>'
+    }
+
+    buildbox.prepend(p);
+    var buildbox1 = $('#build-overdue2');
+    buildbox1.html('');
+    var p1 = '';
+    for (var i = 0; i < datas.quick_over_due_building.length; i++) {
+
+        getCommName2(datas.quick_over_due_building[i].commId,-i-1);
+        getBuildName2(datas.quick_over_due_building[i].builId,i);
+
+        p1 += '<li class="list-group-item-danger"><span class="icomoon">&#xe90e;</span><span id="commName-overdue2'+(-i-1)+'"></span>&nbsp;&nbsp;'+datas.quick_over_due_building[i].builName+'</li>'
+    }
+
+    buildbox1.prepend(p1);
+}
+//当超期人员总数大于4500时要进行分页处理
+function roomlist11(dataInfo){
+    console.log(dataInfo);
+     $.ajax({
+        url: '../overInfo/OverDateInfo',
+        type: 'POST',
+        data: dataInfo,
+        success:function(data){
+            // console.log(data);
+           var datas = eval('('+data+')');
+           roomlist(datas);
+            
+        },
+        error:function(err){
+        alert('发生了错误：'+err.status);
+        console.table(err);
+        }
+    });
+}
+//当人员总数少于4500时直接调用这个函数
+function roomlist(datas){
+    var roomthead = $('#room-thead');
+    var head = '<tr><th>小区</th><th>楼宇</th><th>单元</th><th style="display:none">楼层</th><th>房间号</th><th style="display:none">房间子类</th><th style="display:none">巡检次数累计</th><th style="display:none">上次巡检时间</th><th style="display:none">房间备注</th><th>姓名</th><th style="display:none">身份证号</th><th style="display:none">电话</th><th style="display:none">人员重点关注</th><th style="display:none">工作地</th><th style="display:none">人员备注</th></tr>';
+        roomthead.html(head);
+    var roomtbody = $('#room-tbody');
+        roomtbody.html('');
+    var p = '';
+    console.log(datas.over_due_person.length);
+    for (var i = 0; i < datas.over_due_person.length; i++) {
+        console.log("hello");
+
+        //  console.log("getBuildName");
+        // p += '<tr class="list-group-item-danger"><td id="commName-overdue'+('-'+i+'-'+i)+'"></td><td id="builName-overdue'+i+'"></td><td>'+datas.over_due_room[i].roomUnit+'单元</td><td>'+datas.over_due_room[i].roomNo+'</td>';
+        //      getBuildName(datas.over_due_room[i].builId,i);
+        p += '<tr class="list-group-item-danger">';
+        p += '<td>'+datas.over_due_person[i].commName+'</td>';
+        p += '<td>'+datas.over_due_person[i].builName+'</td>';
+       
+       
+        p += '<td>'+datas.over_due_person[i].roomUnit+'单元</td>';
+        p += '<td style="display:none">'+datas.over_due_person[i].roomFloor+'层</td>';
+        p += '<td>'+datas.over_due_person[i].roomNo+'</td>';
+        
+                if(datas.over_due_person[i].roomSubclass == "0101"){
+                    p += '<td style="display:none">自住住宅</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0102" ){
+                    p += '<td style="display:none">出租住宅</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0201" ){
+                    p += '<td style="display:none">旅馆</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0202" ){
+                    p += '<td style="display:none">废旧金属回收</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0203" ){
+                    p += '<td style="display:none">刻字刻章</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0204" ){
+                    p += '<td style="display:none">典当</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0205" ){
+                    p += '<td style="display:none">网吧</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0301" ){
+                    p += '<td style="display:none">幼儿园</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0302" ){
+                    p += '<td style="display:none">中小学</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0303" ){
+                    p += '<td style="display:none">学生宿舍</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0401" ){
+                    p += '<td style="display:none">足浴</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0402" ){
+                    p += '<td style="display:none">棋牌</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0403" ){
+                    p += '<td style="display:none">KTV</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0405" ){
+                    p += '<td style="display:none">餐饮</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0406" ){
+                    p += '<td style="display:none">药店（医院)</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0407" ){
+                    p += '<td style="display:none">水果店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0408" ){
+                    p += '<td style="display:none">超市</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0409" ){
+                    p += '<td style="display:none">通讯器材</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0410" ){
+                    p += '<td style="display:none">理发店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0411" ){
+                    p += '<td style="display:none">福利彩票</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0412" ){
+                    p += '<td style="display:none">寄递</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0413" ){
+                    p += '<td style="display:none">摄影</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0414" ){
+                    p += '<td style="display:none">洗衣店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0415" ){
+                    p += '<td style="display:none">修车店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0416" ){
+                    p += '<td style="display:none">图文店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0417" ){
+                    p += '<td style="display:none">浴场</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0418" ){
+                    p += '<td style="display:none">加油站</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0419" ){
+                    p += '<td style="display:none">五金店</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0501" ){
+                    p += '<td style="display:none">农贸市场</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0502" ){
+                    p += '<td style="display:none">基督教堂</td>'
+                }else if(datas.over_due_person[i].roomSubclass == "0503"){
+                    p += '<td style="display:none">其他</td>'
+                }else{
+                    p += '<td style="display:none">未知</td>'
+                }
+                p += '<td style="display:none">'+datas.over_due_person[i].countInspect+'</td>';
+                p += '<td style="display:none">'+datas.over_due_person[i].timeLastinspect+'</td>';
+              
+                p += '<td style="display:none">'+datas.over_due_person[i].roomRamark+'</td>';
+                if(datas.over_due_person[i].persName == undefined || 
+                		datas.over_due_person[i].persName == "" ||
+                		datas.over_due_person[i].persName == null){
+                	p += '<td></td>';
+                }else{
+                	p += '<td>'+datas.over_due_person[i].persName+'</td>';
+                }
+              
+                
+                if(datas.over_due_person[i].persIdcard == undefined || 
+                		datas.over_due_person[i].persIdcard == "" ||
+                		datas.over_due_person[i].persIdcard == null){
+                	p += '<td></td>';
+                }else{
+                	p += '<td style="display:none">\''+datas.over_due_person[i].persIdcard+'</td>';
+                }
+                if(datas.over_due_person[i].persPhone == undefined || 
+                		datas.over_due_person[i].persPhone == "" ||
+                		datas.over_due_person[i].persPhone == null){
+                	p += '<td></td>';
+                }else{
+                	p += '<td style="display:none">'+datas.over_due_person[i].persPhone+'</td>';
+                }
+                
+                if(datas.over_due_person[i].persFocus == undefined || 
+                		datas.over_due_person[i].persFocus == "" ||
+                		datas.over_due_person[i].persFocus == null){
+                	p += '<td></td>';
+                }else{
+                	if(datas.over_due_person[i].persFocus == 0){
+                        p += '<td style="display:none">普通</td>';
+                    }
+                    if(datas.over_due_person[i].persFocus == 1){
+                        p += '<td style="display:none">一级</td>';
+                    }
+                    if(datas.over_due_person[i].persFocus == 2){
+                        p += '<td style="display:none">二级</td>';
+                    }
+                     if(datas.over_due_person[i].persFocus == 3){
+                        p += '<td style="display:none">三级</td>';
+                    }
+                }
+               
+                
+                if(datas.over_due_person[i].addrWork == undefined || 
+                		datas.over_due_person[i].addrWork == "" ||
+                		datas.over_due_person[i].addrWork == null){
+                	p += '<td></td>';
+                }else{
+                	 p += '<td style="display:none">'+datas.over_due_person[i].addrWork+'</td>';
+                }
+                if(datas.over_due_person[i].persRamark == undefined || 
+                		datas.over_due_person[i].persRamark == "" ||
+                		datas.over_due_person[i].persRamark == null){
+                	p += '<td></td>';
+                }else{
+
+                    p += '<td style="display:none">'+datas.over_due_person[i].persRamark+'</td>';
+                }
+               
+                p += '</tr>';
+
+
+    }
+   
+
+    roomtbody.prepend(p);
+    if(p == ''){
+        roomthead.html("");
+    }
+    var overdueRoom = $("#overdueRoom-button");
+        overdueRoom.html("");
+        var overdueRoomp = "";
+        if(p != ''){
+             overdueRoomp += '<button class="btn btn-info btn-left" type="button" onclick="confirmExcel1()">'+
+                '导出详情到excel表</button>';
+        }
+        overdueRoom.append(overdueRoomp);
+
+    
+  
+}
+
+//当即将超期人员总数大于4500时要进行分页处理
+function roomlist21(dataInfo){
+     $.ajax({
+        url: '../overInfo/OverDateInfo',
+        type: 'POST',
+        data: dataInfo,
+        success:function(data){
+            // console.log(data);
+            var datas = eval('('+data+')');
+            roomlist1(datas);
+            
+        },
+        error:function(err){
+        alert('发生了错误：'+err.status);
+        console.table(err);
+        }
+    });
+}
+function roomlist1(datas){
+
+        // 即将超期未巡检列表
+        var roomthead2 = $('#room-thead2');
+    var head2 = '<tr><th>小区</th><th>楼宇</th><th>单元</th><th style="display:none">楼层</th><th>房间号</th><th style="display:none">房间子类</th><th style="display:none">巡检次数累计</th><th style="display:none">上次巡检时间</th><th style="display:none">房间备注</th><th>姓名</th><th style="display:none">身份证号</th><th style="display:none">电话</th><th style="display:none">人员是否为重点关注</th><th style="display:none">工作地</th><th style="display:none">人员备注</th></tr>';
+        roomthead2.html(head2);
+    var roomtbody2 = $('#room-tbody2');
+        roomtbody2.html('');
+    var p2 = '';
+    for (var i = 0; i < datas.quick_over_due_person.length; i++) {
+        p2 += '<tr class="list-group-item-danger">';
+        p2 += '<td>'+datas.quick_over_due_person[i].commName+'</td>';
+        p2 += '<td>'+datas.quick_over_due_person[i].builName+'</td>';
+       
+        
+        p2 += '<td>'+datas.quick_over_due_person[i].roomUnit+'单元</td>';
+        p2+= '<td style="display:none">'+datas.quick_over_due_person[i].roomFloor+'层</td>';
+        p2 += '<td>'+datas.quick_over_due_person[i].roomNo+'</td>';
+        
+                if(datas.quick_over_due_person[i].roomSubclass == "0101"){
+                    p2 += '<td style="display:none">自住住宅</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0102" ){
+                    p2 += '<td style="display:none">出租住宅</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0201" ){
+                    p2 += '<td style="display:none">旅馆</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0202" ){
+                    p2 += '<td style="display:none">废旧金属回收</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0203" ){
+                    p2 += '<td style="display:none">刻字刻章</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0204" ){
+                    p2 += '<td style="display:none">典当</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0205" ){
+                    p2 += '<td style="display:none">网吧</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0301" ){
+                    p2 += '<td style="display:none">幼儿园</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0302" ){
+                    p2 += '<td style="display:none">中小学</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0303" ){
+                    p2 += '<td style="display:none">学生宿舍</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0401" ){
+                    p2 += '<td style="display:none">足浴</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0402" ){
+                    p2 += '<td style="display:none">棋牌</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0403" ){
+                    p2 += '<td style="display:none">KTV</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0404" ){
+                    p2 += '<td style="display:none">网吧</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0405" ){
+                    p2 += '<td style="display:none">餐饮</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0406" ){
+                    p2+= '<td style="display:none">药店（医院)</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0407" ){
+                    p2 += '<td style="display:none">水果店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0408" ){
+                    p2 += '<td style="display:none">超市</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0409" ){
+                    p2 += '<td style="display:none">通讯器材</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0410" ){
+                    p2 += '<td style="display:none">理发店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0411" ){
+                    p2 += '<td style="display:none">福利彩票</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0412" ){
+                    p2 += '<td style="display:none">寄递</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0413" ){
+                    p2 += '<td style="display:none">摄影</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0414" ){
+                    p2 += '<td style="display:none">洗衣店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0415" ){
+                    p2 += '<td style="display:none">修车店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0416" ){
+                    p2 += '<td style="display:none">图文店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0417" ){
+                    p2 += '<td style="display:none">浴场</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0418" ){
+                    p2 += '<td style="display:none">加油站</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0419" ){
+                    p2 += '<td style="display:none">五金店</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0501" ){
+                    p2 += '<td style="display:none">农贸市场</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0502" ){
+                    p2 += '<td style="display:none">基督教堂</td>'
+                }else if(datas.quick_over_due_person[i].roomSubclass == "0503"){
+                    p2 += '<td style="display:none">其他</td>'
+                }else{
+                    p2 += '<td style="display:none">未知</td>'
+                }
+                p2 += '<td style="display:none">'+datas.quick_over_due_person[i].countInspect+'</td>';
+                p2 += '<td style="display:none">'+datas.quick_over_due_person[i].timeLastinspect+'</td>';
+                
+                p2 += '<td style="display:none">'+datas.quick_over_due_person[i].roomRamark+'</td>';
+                if(datas.quick_over_due_person[i].persName == undefined ||
+                        datas.quick_over_due_person[i].persName == "" ||
+                        datas.quick_over_due_person[i].persName == null){
+                    p2 += '<td></td>';
+                }else{
+                    p2 += '<td>'+datas.quick_over_due_person[i].persName+'</td>';
+                }
+                if(datas.quick_over_due_person[i].persIdcard == undefined ||
+                        datas.quick_over_due_person[i].persIdcard == "" ||
+                        datas.quick_over_due_person[i].persIdcard == null){
+                    p2 += '<td></td>';
+                }else{
+                    p2 += '<td style="display:none">\''+datas.quick_over_due_person[i].persIdcard+'</td>';
+                }
+                
+                if(datas.quick_over_due_person[i].persPhone == undefined ||
+                        datas.quick_over_due_person[i].persPhone == "" ||
+                        datas.quick_over_due_person[i].persPhone == null){
+                    p2 += '<td></td>';
+                }else{
+                    p2 += '<td style="display:none">'+datas.quick_over_due_person[i].persPhone+'</td>';
+                }
+                
+                
+                if(datas.quick_over_due_person[i].persFocus == undefined ||
+                        datas.quick_over_due_person[i].persFocus == "" ||
+                        datas.quick_over_due_person[i].persFocus == null){
+                    p2 += '<td></td>';
+                }else{
+                      if(datas.quick_over_due_person[i].persFocus == 0){
+                          p2 += '<td style="display:none">普通</td>';
+                      }
+                      if(datas.quick_over_due_person[i].persFocus == 1){
+                          p2 += '<td style="display:none">一级</td>';
+                      }
+                      if(datas.quick_over_due_person[i].persFocus == 2){
+                          p2 += '<td style="display:none">二级</td>';
+                      }
+                       if(datas.quick_over_due_person[i].persFocus == 3){
+                          p2 += '<td style="display:none">三级</td>';
+                      }
+                }
+               
+              
+                if(datas.quick_over_due_person[i].addrWork == undefined ||
+                        datas.quick_over_due_person[i].addrWork == "" ||
+                        datas.quick_over_due_person[i].addrWork == null){
+                    p2 += '<td></td>';
+                }else{
+                     p2 += '<td style="display:none">'+datas.quick_over_due_person[i].addrWork+'</td>';
+                }
+                
+                if(datas.quick_over_due_person[i].persRamark == undefined ||
+                        datas.quick_over_due_person[i].persRamark == "" ||
+                        datas.quick_over_due_person[i].persRamark == null){
+                    p2 += '<td></td>';
+                }else{
+                     p2 += '<td style="display:none">'+datas.quick_over_due_person[i].persRamark+'</td>';
+                }
+                
+               
+                p2 += '</tr>';
+
+    }
+    roomtbody2.prepend(p2);
+    if(p2 == ''){
+        roomthead2.html("");
+    }
+    var overdueRoom2 = $("#overdueRoom-button2");
+        overdueRoom2.html("");
+        var overdueRoomp2 = "";
+        if(p2 != ''){
+             overdueRoomp2 += '<button class="btn btn-info btn-left" type="button" onclick="confirmExcel2()">'+
+                '导出详情到excel表</button>';
+        }
+
+        overdueRoom2.append(overdueRoomp2);
+}
+function confirmExcel1(){
+    var message = confirm("确定导出数据到excel表吗？");
+    if(message == true){
+    	excel1();
+    }
+}
+function excel1(){
+            var time = new Date();
+            var year = time.getFullYear();
+            var month = time.getMonth()+1;
+            var day = time.getDate();
+            var hour = time.getHours();
+            var minute = time.getMinutes();
+            var second = time.getSeconds();
+         var title = $("#overdue-room").html()+ "  " + year + "-" + month + 
+                "-" + day +" " + hour + "\:" + minute + "\:" + second;
+         $("#room-overdue").table2excel({
+                  exclude: ".noExl",
+                    name: "Excel Document Name",
+                    filename: title,
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+              });
+}
+function confirmExcel2(){
+    var message = confirm("确定导出数据到excel表吗？");
+    if(message == true){
+        excel2();
+        console.log("为什么错误");
+    }
+}
+function excel2(){
+         console.log("hello");
+            var time = new Date();
+            var year = time.getFullYear();
+            var month = time.getMonth()+1;
+            var day = time.getDate();
+            var hour = time.getHours();
+            var minute = time.getMinutes();
+            var second = time.getSeconds();
+         var title = $("#overdue-room2").html()+ "  " + year + "-" + month + 
+                "-" + day +" " + hour + "\:" + minute + "\:" + second;
+                console.log(title);
+         $("#room-overdue2").table2excel({
+                  exclude: ".noExl",
+                    name: "Excel Document Name",
+                    filename: title,
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true
+              });
+}
+</script>
+</html>

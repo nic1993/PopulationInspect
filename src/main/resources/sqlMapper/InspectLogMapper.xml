@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.lab.checkIn.mapper.InspectLogMapper">
+	<resultMap id="BaseResultMap" type="edu.hdu.lab.checkIn.model.InspectLog">
+		<id column="INSP_ID" property="inspId" jdbcType="INTEGER" />
+		<result column="ROOM_ID" property="roomId" jdbcType="INTEGER" />
+		<result column="POLI_ID" property="poliId" jdbcType="INTEGER" />
+		<result column="INSP_TIME" property="inspTime" jdbcType="TIMESTAMP" />
+		<result column="INSP_REC" property="inspRec" jdbcType="VARCHAR" />
+		<result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		INSP_ID, ROOM_ID, POLI_ID, INSP_TIME, INSP_REC, RAMARK
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="edu.hdu.lab.checkIn.model.InspectLogExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		'true' as QUERYID,
+		<include refid="Base_Column_List" />
+		from inspectlog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from inspectlog
+		where INSP_ID = #{inspId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		inspectlog
+		where INSP_ID = #{inspId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="edu.hdu.lab.checkIn.model.InspectLogExample">
+		delete from inspectlog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="edu.hdu.lab.checkIn.model.InspectLog">
+		insert into inspectlog
+		(INSP_ID, ROOM_ID, POLI_ID,
+		INSP_TIME, INSP_REC, RAMARK
+		)
+		values
+		(#{inspId,jdbcType=INTEGER}, #{roomId,jdbcType=INTEGER},
+		#{poliId,jdbcType=INTEGER},
+		#{inspTime,jdbcType=TIMESTAMP},
+		#{inspRec,jdbcType=VARCHAR}, #{ramark,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="edu.hdu.lab.checkIn.model.InspectLog">
+		insert into inspectlog
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="inspId != null">
+				INSP_ID,
+			</if>
+			<if test="roomId != null">
+				ROOM_ID,
+			</if>
+			<if test="poliId != null">
+				POLI_ID,
+			</if>
+			<if test="inspTime != null">
+				INSP_TIME,
+			</if>
+			<if test="inspRec != null">
+				INSP_REC,
+			</if>
+			<if test="ramark != null">
+				RAMARK,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="inspId != null">
+				#{inspId,jdbcType=INTEGER},
+			</if>
+			<if test="roomId != null">
+				#{roomId,jdbcType=INTEGER},
+			</if>
+			<if test="poliId != null">
+				#{poliId,jdbcType=INTEGER},
+			</if>
+			<if test="inspTime != null">
+				#{inspTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="inspRec != null">
+				#{inspRec,jdbcType=VARCHAR},
+			</if>
+			<if test="ramark != null">
+				#{ramark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="edu.hdu.lab.checkIn.model.InspectLogExample"
+		resultType="java.lang.Integer">
+		select count(*) from inspectlog
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update inspectlog
+		<set>
+			<if test="record.inspId != null">
+				INSP_ID = #{record.inspId,jdbcType=INTEGER},
+			</if>
+			<if test="record.roomId != null">
+				ROOM_ID = #{record.roomId,jdbcType=INTEGER},
+			</if>
+			<if test="record.poliId != null">
+				POLI_ID = #{record.poliId,jdbcType=INTEGER},
+			</if>
+			<if test="record.inspTime != null">
+				INSP_TIME = #{record.inspTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.inspRec != null">
+				INSP_REC = #{record.inspRec,jdbcType=VARCHAR},
+			</if>
+			<if test="record.ramark != null">
+				RAMARK = #{record.ramark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update inspectlog
+		set INSP_ID = #{record.inspId,jdbcType=INTEGER},
+		ROOM_ID = #{record.roomId,jdbcType=INTEGER},
+		POLI_ID =
+		#{record.poliId,jdbcType=INTEGER},
+		INSP_TIME =
+		#{record.inspTime,jdbcType=TIMESTAMP},
+		INSP_REC =
+		#{record.inspRec,jdbcType=VARCHAR},
+		RAMARK =
+		#{record.ramark,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="edu.hdu.lab.checkIn.model.InspectLog">
+		update inspectlog
+		<set>
+			<if test="roomId != null">
+				ROOM_ID = #{roomId,jdbcType=INTEGER},
+			</if>
+			<if test="poliId != null">
+				POLI_ID = #{poliId,jdbcType=INTEGER},
+			</if>
+			<if test="inspTime != null">
+				INSP_TIME = #{inspTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="inspRec != null">
+				INSP_REC = #{inspRec,jdbcType=VARCHAR},
+			</if>
+			<if test="ramark != null">
+				RAMARK = #{ramark,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where INSP_ID = #{inspId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.InspectLog">
+		update inspectlog
+		set ROOM_ID = #{roomId,jdbcType=INTEGER},
+		POLI_ID =
+		#{poliId,jdbcType=INTEGER},
+		INSP_TIME = #{inspTime,jdbcType=TIMESTAMP},
+		INSP_REC = #{inspRec,jdbcType=VARCHAR},
+		RAMARK =
+		#{ramark,jdbcType=VARCHAR}
+		where INSP_ID = #{inspId,jdbcType=INTEGER}
+	</update>
+
+	<!-- user -->
+	<select id="getInspbyTime" resultMap="InspectShowMap"
+		parameterType="map">
+		select i.INSP_ID as inspId,i.ROOM_ID as roomId,i.POLI_ID
+		as poliId ,i.INSP_TIME as inspTime,i.INSP_REC as inspRec,p.POLI_NAME
+		as poliName,c.COMM_NAME as commName,b.BUIL_NAME as builName,r.* from
+		inspectlog as i,room as r,police as
+		p,building as
+		b,community
+		as c
+		where
+		i.ROOM_ID=r.ROOM_ID
+		and
+		i.POLI_ID=p.POLI_ID
+		and
+		c.COMM_ID=b.COMM_ID
+		and
+		r.BUIL_ID=b.BUIL_ID
+		and
+		(b.POLI_ID=p.POLI_ID
+		or
+		c.POLI_ID=p.POLI_ID)
+		and
+		i.POLI_ID=${poil_id}
+		and i.INSP_TIME &gt;=
+		#{startTime,jdbcType=TIMESTAMP}
+		and i.INSP_TIME &lt;=
+		#{endTime,jdbcType=TIMESTAMP}
+		order by i.INSP_TIME desc
+		<if test="page!=null">
+		<if test="size!=null">
+			limit ${page},${size}
+		</if> 
+		</if>
+	</select>
+
+	<resultMap id="InspectShowMap" type="edu.hdu.lab.checkIn.dto.InspectShow">
+		<id column="inspId" property="inspId" jdbcType="INTEGER" />
+		<result column="roomId" property="roomId" jdbcType="INTEGER" />
+		<result column="poliId" property="poliId" jdbcType="INTEGER" />
+		<result column="inspTime" property="inspTime" jdbcType="TIMESTAMP" />
+		<result column="inspRec" property="inspRec" jdbcType="VARCHAR" />
+		<result column="poliName" property="poliName" jdbcType="VARCHAR" />
+		<result column="commName" property="commName" jdbcType="VARCHAR" />
+		<result column="builName" property="builName" jdbcType="VARCHAR" />
+		<result column="ROOM_UNIT" property="roomUnit" jdbcType="INTEGER" />
+		<result column="ROOM_FLOOR" property="roomFloor" jdbcType="INTEGER" />
+		<result column="ROOM_NO" property="roomNo" jdbcType="CHAR" />
+	</resultMap>
+
+</mapper>

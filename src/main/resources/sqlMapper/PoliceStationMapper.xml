@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.lab.checkIn.mapper.PoliceStationMapper" >
+  <resultMap id="BaseResultMap" type="edu.hdu.lab.checkIn.model.PoliceStation" >
+    <id column="STAT_ID" property="statId" jdbcType="INTEGER" />
+    <result column="BRAN_ID" property="branId" jdbcType="INTEGER" />
+    <result column="BRAN_NAME" property="branName" jdbcType="VARCHAR" />
+    <result column="STAT_NAME" property="statName" jdbcType="VARCHAR" />
+    <result column="STAT_GPSLIST" property="statGpslist" jdbcType="VARCHAR" />
+    <result column="IS_DELETE" property="isDelete" jdbcType="TINYINT" />
+    <result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    STAT_ID, BRAN_ID, BRAN_NAME, STAT_NAME, STAT_GPSLIST, IS_DELETE, RAMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.hdu.lab.checkIn.model.PoliceStationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from policestation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from policestation
+    where STAT_ID = #{statId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from policestation
+    where STAT_ID = #{statId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hdu.lab.checkIn.model.PoliceStationExample" >
+    delete from policestation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hdu.lab.checkIn.model.PoliceStation" >
+    insert into policestation (STAT_ID, BRAN_ID, BRAN_NAME, 
+      STAT_NAME, STAT_GPSLIST, IS_DELETE, 
+      RAMARK)
+    values (#{statId,jdbcType=INTEGER}, #{branId,jdbcType=INTEGER}, #{branName,jdbcType=VARCHAR}, 
+      #{statName,jdbcType=VARCHAR}, #{statGpslist,jdbcType=VARCHAR}, #{isDelete,jdbcType=TINYINT}, 
+      #{ramark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hdu.lab.checkIn.model.PoliceStation" >
+    insert into policestation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="statId != null" >
+        STAT_ID,
+      </if>
+      <if test="branId != null" >
+        BRAN_ID,
+      </if>
+      <if test="branName != null" >
+        BRAN_NAME,
+      </if>
+      <if test="statName != null" >
+        STAT_NAME,
+      </if>
+      <if test="statGpslist != null" >
+        STAT_GPSLIST,
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE,
+      </if>
+      <if test="ramark != null" >
+        RAMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="statId != null" >
+        #{statId,jdbcType=INTEGER},
+      </if>
+      <if test="branId != null" >
+        #{branId,jdbcType=INTEGER},
+      </if>
+      <if test="branName != null" >
+        #{branName,jdbcType=VARCHAR},
+      </if>
+      <if test="statName != null" >
+        #{statName,jdbcType=VARCHAR},
+      </if>
+      <if test="statGpslist != null" >
+        #{statGpslist,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="ramark != null" >
+        #{ramark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hdu.lab.checkIn.model.PoliceStationExample" resultType="java.lang.Integer" >
+    select count(*) from policestation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update policestation
+    <set >
+      <if test="record.statId != null" >
+        STAT_ID = #{record.statId,jdbcType=INTEGER},
+      </if>
+      <if test="record.branId != null" >
+        BRAN_ID = #{record.branId,jdbcType=INTEGER},
+      </if>
+      <if test="record.branName != null" >
+        BRAN_NAME = #{record.branName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statName != null" >
+        STAT_NAME = #{record.statName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statGpslist != null" >
+        STAT_GPSLIST = #{record.statGpslist,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDelete != null" >
+        IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="record.ramark != null" >
+        RAMARK = #{record.ramark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update policestation
+    set STAT_ID = #{record.statId,jdbcType=INTEGER},
+      BRAN_ID = #{record.branId,jdbcType=INTEGER},
+      BRAN_NAME = #{record.branName,jdbcType=VARCHAR},
+      STAT_NAME = #{record.statName,jdbcType=VARCHAR},
+      STAT_GPSLIST = #{record.statGpslist,jdbcType=VARCHAR},
+      IS_DELETE = #{record.isDelete,jdbcType=TINYINT},
+      RAMARK = #{record.ramark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hdu.lab.checkIn.model.PoliceStation" >
+    update policestation
+    <set >
+      <if test="branId != null" >
+        BRAN_ID = #{branId,jdbcType=INTEGER},
+      </if>
+      <if test="branName != null" >
+        BRAN_NAME = #{branName,jdbcType=VARCHAR},
+      </if>
+      <if test="statName != null" >
+        STAT_NAME = #{statName,jdbcType=VARCHAR},
+      </if>
+      <if test="statGpslist != null" >
+        STAT_GPSLIST = #{statGpslist,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      </if>
+      <if test="ramark != null" >
+        RAMARK = #{ramark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where STAT_ID = #{statId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.PoliceStation" >
+    update policestation
+    set BRAN_ID = #{branId,jdbcType=INTEGER},
+      BRAN_NAME = #{branName,jdbcType=VARCHAR},
+      STAT_NAME = #{statName,jdbcType=VARCHAR},
+      STAT_GPSLIST = #{statGpslist,jdbcType=VARCHAR},
+      IS_DELETE = #{isDelete,jdbcType=TINYINT},
+      RAMARK = #{ramark,jdbcType=VARCHAR}
+    where STAT_ID = #{statId,jdbcType=INTEGER}
+  </update>
+</mapper>

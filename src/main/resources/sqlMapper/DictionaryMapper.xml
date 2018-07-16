@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hdu.lab.checkIn.mapper.DictionaryMapper" >
+  <resultMap id="BaseResultMap" type="edu.hdu.lab.checkIn.model.Dictionary" >
+    <id column="DICT_CLASS" property="dictClass" jdbcType="VARCHAR" />
+    <id column="DICT_ITEM" property="dictItem" jdbcType="CHAR" />
+    <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+    <result column="ITEM_NOTE" property="itemNote" jdbcType="VARCHAR" />
+    <result column="RAMARK" property="ramark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    DICT_CLASS, DICT_ITEM, ITEM_NAME, ITEM_NOTE, RAMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="edu.hdu.lab.checkIn.model.DictionaryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="edu.hdu.lab.checkIn.model.DictionaryKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from dictionary
+    where DICT_CLASS = #{dictClass,jdbcType=VARCHAR}
+      and DICT_ITEM = #{dictItem,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.DictionaryKey" >
+    delete from dictionary
+    where DICT_CLASS = #{dictClass,jdbcType=VARCHAR}
+      and DICT_ITEM = #{dictItem,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="edu.hdu.lab.checkIn.model.DictionaryExample" >
+    delete from dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="edu.hdu.lab.checkIn.model.Dictionary" >
+    insert into dictionary (DICT_CLASS, DICT_ITEM, ITEM_NAME, 
+      ITEM_NOTE, RAMARK)
+    values (#{dictClass,jdbcType=VARCHAR}, #{dictItem,jdbcType=CHAR}, #{itemName,jdbcType=VARCHAR}, 
+      #{itemNote,jdbcType=VARCHAR}, #{ramark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.hdu.lab.checkIn.model.Dictionary" >
+    insert into dictionary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dictClass != null" >
+        DICT_CLASS,
+      </if>
+      <if test="dictItem != null" >
+        DICT_ITEM,
+      </if>
+      <if test="itemName != null" >
+        ITEM_NAME,
+      </if>
+      <if test="itemNote != null" >
+        ITEM_NOTE,
+      </if>
+      <if test="ramark != null" >
+        RAMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dictClass != null" >
+        #{dictClass,jdbcType=VARCHAR},
+      </if>
+      <if test="dictItem != null" >
+        #{dictItem,jdbcType=CHAR},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNote != null" >
+        #{itemNote,jdbcType=VARCHAR},
+      </if>
+      <if test="ramark != null" >
+        #{ramark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="edu.hdu.lab.checkIn.model.DictionaryExample" resultType="java.lang.Integer" >
+    select count(*) from dictionary
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update dictionary
+    <set >
+      <if test="record.dictClass != null" >
+        DICT_CLASS = #{record.dictClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dictItem != null" >
+        DICT_ITEM = #{record.dictItem,jdbcType=CHAR},
+      </if>
+      <if test="record.itemName != null" >
+        ITEM_NAME = #{record.itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.itemNote != null" >
+        ITEM_NOTE = #{record.itemNote,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ramark != null" >
+        RAMARK = #{record.ramark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update dictionary
+    set DICT_CLASS = #{record.dictClass,jdbcType=VARCHAR},
+      DICT_ITEM = #{record.dictItem,jdbcType=CHAR},
+      ITEM_NAME = #{record.itemName,jdbcType=VARCHAR},
+      ITEM_NOTE = #{record.itemNote,jdbcType=VARCHAR},
+      RAMARK = #{record.ramark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.hdu.lab.checkIn.model.Dictionary" >
+    update dictionary
+    <set >
+      <if test="itemName != null" >
+        ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemNote != null" >
+        ITEM_NOTE = #{itemNote,jdbcType=VARCHAR},
+      </if>
+      <if test="ramark != null" >
+        RAMARK = #{ramark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DICT_CLASS = #{dictClass,jdbcType=VARCHAR}
+      and DICT_ITEM = #{dictItem,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.hdu.lab.checkIn.model.Dictionary" >
+    update dictionary
+    set ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      ITEM_NOTE = #{itemNote,jdbcType=VARCHAR},
+      RAMARK = #{ramark,jdbcType=VARCHAR}
+    where DICT_CLASS = #{dictClass,jdbcType=VARCHAR}
+      and DICT_ITEM = #{dictItem,jdbcType=CHAR}
+  </update>
+</mapper>
