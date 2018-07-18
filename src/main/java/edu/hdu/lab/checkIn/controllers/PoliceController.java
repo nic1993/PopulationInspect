@@ -191,7 +191,7 @@ public class PoliceController {
 		Map<String, Object> resultMap = new HashMap<String, Object>(2);
 		// 根据警员id获取building
 		List<Building> selectByExample = policeMapper.getBuilbyPoliid(poli_id);
-
+        
 		resultMap.put("room_number", policeMapper.getRoomNumbyPoliid(poli_id));
 		resultMap.put("over_due_room_number", policeMapper.getOverRoomNumByPoliId(poli_id));
 		resultMap.put("focus_room_number", policeMapper.getImpoRoomNumbyPoliid(poli_id));
